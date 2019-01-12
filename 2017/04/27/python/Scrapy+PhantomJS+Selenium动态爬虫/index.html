@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Scrapy+PhantomJS+Selenium动态爬虫 | 孔天逸&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="转自http://jiayi.space/post/scrapy-phantomjs-seleniumdong-tai-pa-chong#fb_new_comment  很多网页具有动态加载的功能，简单的静态页面爬虫对它就无能为力了。这时候就需要PhantomJS+Selenium两大神器，再加上Scrapy爬虫框架，就可以拼凑成一个动态爬虫。 PhantomJS简单点说PhantomJS就是一">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scrapy+PhantomJS+Selenium动态爬虫">
+<meta property="og:url" content="http://kongtianyi.github.io/2017/04/27/python/Scrapy+PhantomJS+Selenium动态爬虫/index.html">
+<meta property="og:site_name" content="孔天逸&#39;Blog">
+<meta property="og:description" content="转自http://jiayi.space/post/scrapy-phantomjs-seleniumdong-tai-pa-chong#fb_new_comment  很多网页具有动态加载的功能，简单的静态页面爬虫对它就无能为力了。这时候就需要PhantomJS+Selenium两大神器，再加上Scrapy爬虫框架，就可以拼凑成一个动态爬虫。 PhantomJS简单点说PhantomJS就是一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-05-11T12:54:52.319Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scrapy+PhantomJS+Selenium动态爬虫">
+<meta name="twitter:description" content="转自http://jiayi.space/post/scrapy-phantomjs-seleniumdong-tai-pa-chong#fb_new_comment  很多网页具有动态加载的功能，简单的静态页面爬虫对它就无能为力了。这时候就需要PhantomJS+Selenium两大神器，再加上Scrapy爬虫框架，就可以拼凑成一个动态爬虫。 PhantomJS简单点说PhantomJS就是一">
+  
+    <link rel="alternate" href="/atom.xml" title="孔天逸&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孔天逸&#39;Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">いらしゃいませ。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://kongtianyi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/Scrapy+PhantomJS+Selenium动态爬虫" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/27/python/Scrapy+PhantomJS+Selenium动态爬虫/" class="article-date">
+  <time datetime="2017-04-27T08:43:14.000Z" itemprop="datePublished">2017-04-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Scrapy+PhantomJS+Selenium动态爬虫
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>转自<a href="http://jiayi.space/post/scrapy-phantomjs-seleniumdong-tai-pa-chong#fb_new_comment" target="_blank" rel="noopener">http://jiayi.space/post/scrapy-phantomjs-seleniumdong-tai-pa-chong#fb_new_comment</a></p>
+</blockquote>
+<p>很多网页具有动态加载的功能，简单的静态页面爬虫对它就无能为力了。这时候就需要PhantomJS+Selenium两大神器，再加上Scrapy爬虫框架，就可以拼凑成一个动态爬虫。</p>
+<h1 id="PhantomJS"><a href="#PhantomJS" class="headerlink" title="PhantomJS"></a>PhantomJS</h1><p>简单点说PhantomJS就是一个没有界面的浏览器，提供了JavaScript接口。<br>在Windows平台，下载好PhantomJS后，将phantomjs.exe放到可执行路径里。就可以通过JS与webkit内核交互了。<br>一个简单的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// test.js</span><br><span class="line">var page = require(&apos;webpage&apos;).create(), //获取操作dom或web网页的对象</span><br><span class="line">    system = require(&apos;system&apos;),         //获取操作系统对象</span><br><span class="line">    address;</span><br><span class="line">if (system.args.length === 1) &#123;</span><br><span class="line">    phantom.exit(1);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    address = system.args[1];</span><br><span class="line">    page.open(address, function (status) &#123;   //访问url</span><br><span class="line">        console.log(page.content);</span><br><span class="line">        phantom.exit();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在cmd中输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">phantomjs ./test.js http://baidu.com</span><br></pre></td></tr></table></figure>
+<p>就会打印出得到的html代码。</p>
+<h2 id="PhantomJS在linux下的安装"><a href="#PhantomJS在linux下的安装" class="headerlink" title="PhantomJS在linux下的安装"></a>PhantomJS在linux下的安装</h2><p>先安装依赖包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential g++ flex bison gperf ruby perl libsqlite3-dev libfontconfig1-dev libicu-dev libfreetype6 libssl-dev libpng-dev libjpeg-dev python libx11-dev libxext-dev</span><br></pre></td></tr></table></figure>
+<p>下载PhantomJS</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2</span><br></pre></td></tr></table></figure>
+<p>官方链接可能速度很慢,<a href="http://pan.baidu.com/s/1hs5Kx4w" target="_blank" rel="noopener">百度云链接</a>, 密码：g5b4.<br>解压：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tar -xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 </span><br><span class="line">sudo cp -R phantomjs-2.1.1-linux-x86_64 /usr/local/share/ </span><br><span class="line">sudo ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"># Selenium</span><br><span class="line"></span><br><span class="line">Selenium是一个自动化的测试工具，这里主要用到了它的Webdriver操作浏览器。Selenium可以操作大多数主流浏览器（可能需要相应的驱动），当然也可以操作无界面的浏览器PhantomJS。</span><br><span class="line">直接pip安装：</span><br></pre></td></tr></table></figure>
+<p>pip install selenium<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">使用Selenium操作PhantomJS：</span><br></pre></td></tr></table></figure></p>
+<p>from selenium import webdriver</p>
+<p>driver = webdriver.PhantomJS()    # 获取浏览器对象<br>driver.get(‘<a href="http://www.baidu.com/&#39;" target="_blank" rel="noopener">http://www.baidu.com/&#39;</a>)<br>print driver.page_source<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里的driver.get()方法会等待页面加载完成后才返回，也就是说JS也会加载完毕，有很多ajax的情况除外...</span><br><span class="line">Selenium还可以获取节点，填充表单，选择元素等交互操作，这些用到的时候再提。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Scrapy - Downloader Middleware</span><br><span class="line"></span><br><span class="line">Scrapy不再详细介绍，这里主要会用到Downloader Middleware， 下载器中间件。</span><br><span class="line"></span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20170427163755851?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</span><br><span class="line"></span><br><span class="line">下载器中间件在下载器和Scrapy引擎之间，每一个request和response都会通过中间件进行处理。在中间件中，对request进行处理的函数是process_request(request, spider)</span><br><span class="line"></span><br><span class="line">&gt; </span><br><span class="line">process_request() 必须返回其中之一: 返回 None 、返回一个 Response 对象、返回一个 Request 对象或raise IgnoreRequest 。</span><br><span class="line">如果其返回 None ，Scrapy将继续处理该request，执行其他的中间件的相应方法，直到合适的下载器处理函数(download handler)被调用， 该request被执行(其response被下载)。</span><br><span class="line">**如果其返回 Response 对象，Scrapy将不会调用 任何 其他的 process_request() 或 process_exception() 方法**，或相应地下载函数； 其将返回该response。 已安装的中间件的 process_response() 方法则会在每个response返回时被调用。</span><br><span class="line">如果其返回 Request 对象，Scrapy则停止调用 process_request方法并重新调度返回的request。当新返回的request被执行后， 相应地中间件链将会根据下载的response被调用。</span><br><span class="line">动态爬虫需要中间件处理request，将加载过特定js的页面作为response返回给spider。</span><br><span class="line"></span><br><span class="line"># 融合</span><br><span class="line"></span><br><span class="line">简单说这三者的关系就是：Scrapy通过Selenium使用PhantomJS，爬取加载过JS的页面。</span><br><span class="line"></span><br><span class="line">spider.py</span><br><span class="line"></span><br><span class="line">在自定义的spider类里，我们要控制何时使用下载器中间件(默认所有请求都会经过中间件)。例如我需要先爬取文章列表页，再获取列表页里的文章页url，再以此爬取文章详情页。在爬取列表页时，不需要经过下载器中间件执行JS，而爬取正文页就需要经过加载过JS的页面。</span><br></pre></td></tr></table></figure></p>
+<p>class mySpider(Spider):<br>    name = ‘myspider’<br>    start_urls = [….]</p>
+<pre><code>def parse(self, response):
+    &quot;&quot;&quot;
+    解析文章列表页
+    &quot;&quot;&quot;
+    urls = response.xpath(&apos;.....&apos;)
+    for url in urls:
+        request = Request(url=url, callback=self.parse_post, dont_filter=True)
+        request.meta[&apos;PhantomJS&apos;] = True
+        yield request
+
+def parse_post(self, response):  
+     &quot;&quot;&quot;
+    解析文章正文页
+    &quot;&quot;&quot;    
+    item = myItem()
+    item[&apos;title&apos;] = response.xpath(&apos;.....&apos;)  
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">对于每一个爬取详情页的request，我们都加上了一个PhantomJS的meta：</span><br></pre></td></tr></table></figure>
+<p>request.meta[‘PhantomJS’] = True<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">当请求经过下载器中间件时，检查请求中是否有这个meta，决定这个请求要不要使用中间件。</span><br><span class="line"></span><br><span class="line">JSMiddleware.py</span><br></pre></td></tr></table></figure></p>
+<p>class PhantomJSMiddleware(object):<br>    @classmethod<br>    def process_request(cls, request, spider):</p>
+<pre><code>if request.meta.has_key(&apos;PhantomJS&apos;):
+    driver = webdriver.PhantomJS() 
+    driver.get(request.url)
+    content = driver.page_source.encode(&apos;utf-8&apos;)
+    driver.quit()  
+    return HtmlResponse(request.url, encoding=&apos;utf-8&apos;, body=content, request=request)
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">下载器中间件首先判断请求是否需要经过中间件，然后用PhantomJS打开请求的url，将加载好JS的页面装入HtmlResponse，返回给spider继续处理。</span><br><span class="line">注意：如果把爬虫添加到定时任务，需要给phantomjs指定可执行文件的路径，因为crontab不会加载用户自定义的环境变量，比如：</span><br></pre></td></tr></table></figure>
+<p>driver = webdriver.PhantomJS(executable_path=’/usr/local/bin/phantomjs’)<br>另外还要在setting.py中开启中间件：</p>
+<p>DOWNLOADER_MIDDLEWARES = {<br>    ‘MySpider.middlewares.JSMiddleware.PhantomJSMiddleware’: 100<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 改进</span><br><span class="line"></span><br><span class="line">现在的web页面内容越来越丰富，多数页面都有滚动加载之类的功能，上述爬虫只能运行加载页面完成时的JS，对其他的JS就无力了。</span><br><span class="line">比如某网站的文章详情页面中，图片只有在当图片区域出现在屏幕显示区域时，才会加载。对于这种情况，我们需要利用JS代码，模仿浏览器的滚动页面行为。让对应的加载图片的代码运行后，再爬取html。</span><br><span class="line">滚动屏幕到底部的JS函数：</span><br></pre></td></tr></table></figure></p>
+<p>function scrollToBottom() {</p>
+<pre><code>var Height = document.body.clientHeight,  //文本高度
+    screenHeight = window.innerHeight,  //屏幕高度
+    INTERVAL = 100,  // 滚动动作之间的间隔时间
+    delta = 500,  //每次滚动距离
+    curScrollTop = 0;    //当前window.scrollTop 值
+
+var scroll = function () {
+    curScrollTop = document.body.scrollTop;
+    window.scrollTo(0,curScrollTop + delta);
+};
+
+var timer = setInterval(function () {
+    var curHeight = curScrollTop + screenHeight;
+    if (curHeight &gt;= Height){   //滚动到页面底部时，结束滚动
+        clearInterval(timer);
+    }
+    scroll();
+}, INTERVAL)
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将上述代码放入下载器中间件中执行：</span><br></pre></td></tr></table></figure></p>
+<p>js = “””<br>function scrollToBottom() {<br>    ….<br>}<br>scrollToBottom()<br>“””</p>
+<p>class PhantomJSMiddleware(object):<br>    @classmethod<br>    def process_request(cls, request, spider):</p>
+<pre><code>if request.meta.has_key(&apos;PhantomJS&apos;):
+    driver = webdriver.PhantomJS() 
+    driver.get(request.url)
+
+    driver.execute_script(js)   
+    time.sleep(1)  # 等待JS执行
+
+    content = driver.page_source.encode(&apos;utf-8&apos;)
+    driver.quit()  
+    return HtmlResponse(request.url, encoding=&apos;utf-8&apos;, body=content, request=request)
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">测试时发现，如果等待JS执行的时间过短</span><br></pre></td></tr></table></figure>
+<p> time.sleep(&lt;wait_time&gt;)<br><code>`</code><br>会导致爬取的页面靠近底部的图片没能加载，因为滚动函数还未执行到此处。所以需要预留一个稍微长一点的等待时间。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://kongtianyi.github.io/2017/04/27/python/Scrapy+PhantomJS+Selenium动态爬虫/" data-id="cjqtftin70096e8u8u05j4al1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/30/python/BloomFilterRedis/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          基于Redis的布隆过滤器的实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/16/prose/prose-4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">故意的意识流</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lisence/">Lisence</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/commen/">commen</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲情偶记/">闲情偶记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lisence/">Lisence</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-zerorpc/">Python zerorpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commen/">commen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/next/">next</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qsort/">qsort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大型/">大型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据分析/">数据分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/诗/">诗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/闲情偶记/">闲情偶记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合框架/">集合框架</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Hadoop/" style="font-size: 11.67px;">Hadoop</a> <a href="/tags/JAVA/" style="font-size: 11.67px;">JAVA</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Lisence/" style="font-size: 10px;">Lisence</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-zerorpc/" style="font-size: 10px;">Python zerorpc</a> <a href="/tags/Scrapy/" style="font-size: 18.33px;">Scrapy</a> <a href="/tags/Ubuntu/" style="font-size: 11.67px;">Ubuntu</a> <a href="/tags/commen/" style="font-size: 10px;">commen</a> <a href="/tags/hash/" style="font-size: 11.67px;">hash</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/html/" style="font-size: 11.67px;">html</a> <a href="/tags/js/" style="font-size: 13.33px;">js</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/next/" style="font-size: 11.67px;">next</a> <a href="/tags/qsort/" style="font-size: 10px;">qsort</a> <a href="/tags/大型/" style="font-size: 10px;">大型</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/诗/" style="font-size: 13.33px;">诗</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/闲情偶记/" style="font-size: 15px;">闲情偶记</a> <a href="/tags/集合框架/" style="font-size: 10px;">集合框架</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/01/12/prose/prose-1/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/python/BloomFilterRedis/">基于Redis的布隆过滤器的实现</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/27/python/Scrapy+PhantomJS+Selenium动态爬虫/">Scrapy+PhantomJS+Selenium动态爬虫</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/16/prose/prose-4/">故意的意识流</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/02/python/Python-excel-demo/">Python读写/追加excel文件Demo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 孔天逸<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

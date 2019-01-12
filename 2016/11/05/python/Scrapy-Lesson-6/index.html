@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Scrapy定向爬虫教程(六)——分析表单并回帖 | 孔天逸&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/11/05/python/Scrapy-Lesson-6/ 本节内容在某些时候，网站的某些内容的访问不仅仅需要用户登录，而且需要回复才能看到全部内容，如下图。所以我们需要通过模拟表单提交实现用爬虫回帖，进而获取到隐藏内容。本节就来介绍模拟表单提交的方法，github地址：https://github.com/k">
+<meta name="keywords" content="Scrapy,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scrapy定向爬虫教程(六)——分析表单并回帖">
+<meta property="og:url" content="http://kongtianyi.github.io/2016/11/05/python/Scrapy-Lesson-6/index.html">
+<meta property="og:site_name" content="孔天逸&#39;Blog">
+<meta property="og:description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/11/05/python/Scrapy-Lesson-6/ 本节内容在某些时候，网站的某些内容的访问不仅仅需要用户登录，而且需要回复才能看到全部内容，如下图。所以我们需要通过模拟表单提交实现用爬虫回帖，进而获取到隐藏内容。本节就来介绍模拟表单提交的方法，github地址：https://github.com/k">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20161105101136404">
+<meta property="og:image" content="http://img.blog.csdn.net/20161105101722257">
+<meta property="og:image" content="http://img.blog.csdn.net/20161105103055324">
+<meta property="og:image" content="http://img.blog.csdn.net/20161105103609623">
+<meta property="og:image" content="http://img.blog.csdn.net/20161105103931472">
+<meta property="og:image" content="http://img.blog.csdn.net/20161105104321955">
+<meta property="og:image" content="http://img.blog.csdn.net/20161105104635575">
+<meta property="og:updated_time" content="2016-11-05T08:31:03.897Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scrapy定向爬虫教程(六)——分析表单并回帖">
+<meta name="twitter:description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/11/05/python/Scrapy-Lesson-6/ 本节内容在某些时候，网站的某些内容的访问不仅仅需要用户登录，而且需要回复才能看到全部内容，如下图。所以我们需要通过模拟表单提交实现用爬虫回帖，进而获取到隐藏内容。本节就来介绍模拟表单提交的方法，github地址：https://github.com/k">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20161105101136404">
+  
+    <link rel="alternate" href="/atom.xml" title="孔天逸&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孔天逸&#39;Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">いらしゃいませ。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://kongtianyi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/Scrapy-Lesson-6" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/05/python/Scrapy-Lesson-6/" class="article-date">
+  <time datetime="2016-11-05T03:14:22.000Z" itemprop="datePublished">2016-11-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Scrapy定向爬虫教程(六)——分析表单并回帖
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>本教程为原创教程，转载请注明出处<a href="http://kongtianyi.cn/2016/11/05/python/Scrapy-Lesson-6/" target="_blank" rel="noopener">http://kongtianyi.cn/2016/11/05/python/Scrapy-Lesson-6/</a></p>
+<h1 id="本节内容"><a href="#本节内容" class="headerlink" title="本节内容"></a>本节内容</h1><p>在某些时候，网站的某些内容的访问不仅仅需要用户登录，而且需要回复才能看到全部内容，如下图。所以我们需要通过模拟表单提交实现用爬虫回帖，进而获取到隐藏内容。本节就来介绍模拟表单提交的方法，github地址：<a href="https://github.com/kongtianyi/heartsong/tree/reply" target="_blank" rel="noopener">https://github.com/kongtianyi/heartsong/tree/reply</a></p>
+<a id="more"></a>
+<p><img src="http://img.blog.csdn.net/20161105101136404" alt="隐藏"></p>
+<h1 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h1><p>你已经了解了HTML表单的相关知识(这个很好找)和scrapy的简单功能以及配置Cookie，如果还不会，请戳<a href="http://kongtianyi.cn/2016/10/15/python/Scrapy-Lesson-5/" target="_blank" rel="noopener">Scrapy定向爬虫教程(五)——保持登陆状态</a>。</p>
+<h1 id="分析表单"><a href="#分析表单" class="headerlink" title="分析表单"></a>分析表单</h1><p>在帖子页面的底部找到表单，右键检查，查看这一部分的源代码</p>
+<p><img src="http://img.blog.csdn.net/20161105101722257" alt="检查"></p>
+<p>我们知道，表单提交的数据都在<code>&lt;form&gt;</code>标签里，明显这里也没有多选框之类的东西，我们只需要把有<strong>name</strong>属性的元素如<code>&lt;input&gt;</code>和<code>&lt;textarea&gt;</code>都找出来就好了</p>
+<p><img src="http://img.blog.csdn.net/20161105103055324" alt="分析"></p>
+<p>图中提到这时的提交地址并不全，咋办呢，我们就先手动回复一下，看看都发生了什么</p>
+<p><img src="http://img.blog.csdn.net/20161105103609623" alt="勾选"></p>
+<hr>
+<p><img src="http://img.blog.csdn.net/20161105103931472" alt="action"></p>
+<hr>
+<p><img src="http://img.blog.csdn.net/20161105104321955" alt="检查"></p>
+<hr>
+<p><img src="http://img.blog.csdn.net/20161105104635575" alt="编码"></p>
+<p>转码的话，网上有许多<a href="http://tool.oschina.net/encode?type=2" target="_blank" rel="noopener">现成的工具</a>，也可以自己写个小脚本。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>把上面的四张图看完并且实践之后局势就很清晰了，剩下的就是轻轻松松写代码了。ok，上代码，思路就是先访问一个页面，查找这个页面是否需要回复可见，如果需要，则回复之。这里我把判断是否需要回复注释掉了，随便一个帖子id直接运行就会回复。推荐移步去<a href="https://github.com/kongtianyi/heartsong/tree/reply" target="_blank" rel="noopener">github上</a>把代码下载到本地来看，重要部分的我都写了注释。</p>
+<p>因为本节只介绍回复，所以只要网页上出现了我们用爬虫回复出来的内容就算成功了，就不跟下载分析什么的整合到一起了。</p>
+<p><code>heartsong_spider.py</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line"># import scrapy # 可以用这句代替下面三句，但不推荐</span><br><span class="line">from scrapy.spiders import Spider</span><br><span class="line">from scrapy.selector import Selector</span><br><span class="line">from scrapy import Request</span><br><span class="line">from scrapy import FormRequest  # 带表单的请求</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line">class HeartsongSpider(Spider):</span><br><span class="line">    name = &quot;heartsong&quot;</span><br><span class="line">    allowed_domains = [&quot;heartsong.top&quot;]  # 允许爬取的域名，非此域名的网页不会爬取</span><br><span class="line">    start_urls = [</span><br><span class="line">        # 起始url，这里只回复这一个页面，多个页面连续爬取请看mast分支</span><br><span class="line">        &quot;http://www.heartsong.top/forum.php?mod=viewthread&amp;tid=136&quot;</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    # 用来保持登录状态，可把chrome上拷贝下来的字符串形式cookie转化成字典形式，粘贴到此处</span><br><span class="line">    cookies = &#123;&apos;QGfS_2132_lastvisit&apos;: &apos;1478302547&apos;, &apos;QGfS_2132_seccode&apos;: &apos;1.fa43f9a3cb6efdd635&apos;, &apos;QGfS_2132_smile&apos;: &apos;1D1&apos;, &apos;QGfS_2132_lip&apos;: &apos;202.102.144.8%2C1478307120&apos;, &apos;QGfS_2132_ulastactivity&apos;: &apos;29d9HUFm42onqH11DCnfZh8MN%2FFmPt0TEe15bNf2oeHflNI%2BJiwJ&apos;, &apos;QGfS_2132_auth&apos;: &apos;d713PkyUoDmnvp%2BestZH5F4lo%2BK0ewxTT1A02ulX%2FbRufbG%2B6T%2FIATHA5uYS9yoQzeNH3qz%2BupceANNs4IWF9w&apos;, &apos;QGfS_2132_nofavfid&apos;: &apos;1&apos;, &apos;QGfS_2132_lastact&apos;: &apos;1478308730%09misc.php%09patch&apos;, &apos;QGfS_2132_viewid&apos;: &apos;tid_196&apos;, &apos;QGfS_2132_sid&apos;: &apos;wbBi5Q&apos;, &apos;pgv_info&apos;: &apos;ssi&apos;, &apos;QGfS_2132_st_p&apos;: &apos;14%7C1478308725%7Cacf78675ed42e1121abb06c3d6b494cb&apos;, &apos;QGfS_2132_visitedfid&apos;: &apos;36D48&apos;, &apos;QGfS_2132_saltkey&apos;: &apos;GN4BcGg4&apos;, &apos;QGfS_2132_lastcheckfeed&apos;: &apos;14%7C1478307120&apos;, &apos;QGfS_2132_forum_lastvisit&apos;: &apos;D_48_1478306883D_36_1478306901&apos;, &apos;QGfS_2132_st_t&apos;: &apos;0%7C1478306901%7C6c837d3b8b5892fd86ea3bb15bf4426e&apos;, &apos;pgv_pvi&apos;: &apos;8246475216&apos;, &apos;QGfS_2132_security_cookiereport&apos;: &apos;12adOGUyzEnhcSY%2FZb5MgT52%2BxCPi3KZn%2Fh7pNHlxvWLnqDlLbAd&apos;&#125;</span><br><span class="line"></span><br><span class="line">    # 发送给服务器的http头信息，有的网站需要伪装出浏览器头进行爬取，有的则不需要</span><br><span class="line">    headers = &#123;</span><br><span class="line">        &apos;Connection&apos;: &apos;keep - alive&apos;,</span><br><span class="line">        &apos;User-Agent&apos;: &apos;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36&apos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 对请求的返回进行处理的配置</span><br><span class="line">    meta = &#123;</span><br><span class="line">        &apos;dont_redirect&apos;: True,  # 禁止网页重定向</span><br><span class="line">        &apos;handle_httpstatus_list&apos;: [301, 302]  # 对哪些异常返回进行处理</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    def start_requests(self):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        这是一个重载函数，它的作用是发出第一个Request请求</span><br><span class="line">        :return:</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        # 带着headers、cookies去请求self.start_urls[0],返回的response会被送到</span><br><span class="line">        # 回调函数parse中</span><br><span class="line">        yield Request(self.start_urls[0],</span><br><span class="line">                             callback=self.parse, headers=self.headers,</span><br><span class="line">                             cookies=self.cookies, meta=self.meta)</span><br><span class="line"></span><br><span class="line">    def parse(self, response):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        用以处理主题贴的首页</span><br><span class="line">        :param response:</span><br><span class="line">        :return:</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        selector = Selector(response)  # 创建选择器</span><br><span class="line"></span><br><span class="line">        table = selector.xpath(&apos;//*[starts-with(@id, &quot;pid&quot;)]&apos;)  # 取出所有的楼层</span><br><span class="line">        if not table:</span><br><span class="line">            # 这个链接内没有一个楼层，说明此主题贴可能被删了，</span><br><span class="line">            # 把这类url保存到一个文件里，以便审查原因</span><br><span class="line">            print &quot;bad url!&quot;</span><br><span class="line">            f = open(&apos;badurl.txt&apos;, &apos;a&apos;)</span><br><span class="line">            f.write(response.url)</span><br><span class="line">            f.write(&apos;\n&apos;)</span><br><span class="line">            f.close()</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        # 如有回复可见的隐藏区域，进行回复</span><br><span class="line">        # locked = selector.xpath(&apos;//*[@class=&quot;locked&quot;]&apos;)</span><br><span class="line">        # if locked:</span><br><span class="line">        #     re_a = locked.xpath(&apos;a/text()&apos;)</span><br><span class="line">        #     if re_a and re_a.extract()[0] == u&apos;回复&apos;:</span><br><span class="line">        # 找到表单要提交到的地址</span><br><span class="line">        form_action = selector.xpath(&apos;//*[@id=&quot;fastpostform&quot;]/@action&apos;).extract()[0]</span><br><span class="line">        action = &quot;http://www.&quot; + self.allowed_domains[0] + &quot;/&quot; + form_action + &quot;&amp;inajax=1&quot;</span><br><span class="line">        replys = [</span><br><span class="line">            &apos;&amp;#x56DE;&amp;#x590D;&amp;#x770B;&amp;#x770B; &amp;#x6709;&amp;#x7528;&amp;#x4E0D;&apos;,</span><br><span class="line">            &apos;&amp;#x5389;&amp;#x5BB3;&amp;#x5389;&amp;#x5BB3;&amp;#xFF0C;&amp;#x8C22;&amp;#x8C22;&amp;#x5206;&amp;#x4EAB;&amp;#xFF01;&apos;</span><br><span class="line">        ]  # utf-8编码的一些回复,具体使用什么编码要看具体的网站的编码</span><br><span class="line">        reply = replys[random.randint(0, 1)]  #防止被管理员识别是机器回复，要随机一下</span><br><span class="line">        formdata = &#123;</span><br><span class="line">            &apos;formhash&apos;: selector.xpath(&apos;//*[@id=&quot;fastpostform&quot;]/table/tr/td[2]/input[2]/@value&apos;).extract()[0],</span><br><span class="line">            &apos;usesig&apos;: selector.xpath(&apos;//*[@id=&quot;fastpostform&quot;]/table/tr/td[2]/input[3]/@value&apos;).extract()[0],</span><br><span class="line">            &apos;subject&apos;: selector.xpath(&apos;//*[@id=&quot;fastpostform&quot;]/table/tr/td[2]/input[4]/@value&apos;).extract()[0],</span><br><span class="line">            &apos;posttime&apos;: selector.xpath(&apos;//*[@id=&quot;posttime&quot;]/@value&apos;).extract()[0],</span><br><span class="line">            &apos;message&apos;: reply</span><br><span class="line">        &#125;  # 表单数据，是从网页表单代码里分析出来的</span><br><span class="line">        # 发出带表单的请求，当然，要有cookie</span><br><span class="line">        yield FormRequest(action, callback=self.finish,</span><br><span class="line">                          headers=self.headers,</span><br><span class="line">                          cookies=self.cookies,</span><br><span class="line">                          meta=self.meta,</span><br><span class="line">                          formdata=formdata)</span><br><span class="line">        return</span><br><span class="line"></span><br><span class="line">    def finish(self, response):</span><br><span class="line">        print &quot;reply seccess!&quot;</span><br></pre></td></tr></table></figure></p>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>与正常手动回复无异。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本节介绍了如何分析表单并回帖，希望对你有所帮助！剩下的部分还有配置代理和发送邮件，如果需要，请通知我更新，哈，懒癌需要驱动。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://kongtianyi.github.io/2016/11/05/python/Scrapy-Lesson-6/" data-id="cjqtftikd003me8u8mgwkxtij" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Scrapy/">Scrapy</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/06/python/Django-Lesson-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          码出你的第一个Django app——Django官方教程(一)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/01/java/JAVA-Static-Resource/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JAVA窗体程序调用静态资源</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lisence/">Lisence</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/commen/">commen</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲情偶记/">闲情偶记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lisence/">Lisence</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-zerorpc/">Python zerorpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commen/">commen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/next/">next</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qsort/">qsort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大型/">大型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据分析/">数据分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/诗/">诗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/闲情偶记/">闲情偶记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合框架/">集合框架</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Hadoop/" style="font-size: 11.67px;">Hadoop</a> <a href="/tags/JAVA/" style="font-size: 11.67px;">JAVA</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Lisence/" style="font-size: 10px;">Lisence</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-zerorpc/" style="font-size: 10px;">Python zerorpc</a> <a href="/tags/Scrapy/" style="font-size: 18.33px;">Scrapy</a> <a href="/tags/Ubuntu/" style="font-size: 11.67px;">Ubuntu</a> <a href="/tags/commen/" style="font-size: 10px;">commen</a> <a href="/tags/hash/" style="font-size: 11.67px;">hash</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/html/" style="font-size: 11.67px;">html</a> <a href="/tags/js/" style="font-size: 13.33px;">js</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/next/" style="font-size: 11.67px;">next</a> <a href="/tags/qsort/" style="font-size: 10px;">qsort</a> <a href="/tags/大型/" style="font-size: 10px;">大型</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/诗/" style="font-size: 13.33px;">诗</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/闲情偶记/" style="font-size: 15px;">闲情偶记</a> <a href="/tags/集合框架/" style="font-size: 10px;">集合框架</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/01/12/prose/prose-1/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/python/BloomFilterRedis/">基于Redis的布隆过滤器的实现</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/27/python/Scrapy+PhantomJS+Selenium动态爬虫/">Scrapy+PhantomJS+Selenium动态爬虫</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/16/prose/prose-4/">故意的意识流</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/02/python/Python-excel-demo/">Python读写/追加excel文件Demo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 孔天逸<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

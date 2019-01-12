@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>码出你的第一个Django app——Django官方教程(一) | 孔天逸&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="译者:  官方原文链接https://docs.djangoproject.com/en/1.10/intro/tutorial01/，如有错译或理解偏差，请不吝批评指正，先行谢过！">
+<meta name="keywords" content="Python,Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="码出你的第一个Django app——Django官方教程(一)">
+<meta property="og:url" content="http://kongtianyi.github.io/2016/11/06/python/Django-Lesson-1/index.html">
+<meta property="og:site_name" content="孔天逸&#39;Blog">
+<meta property="og:description" content="译者:  官方原文链接https://docs.djangoproject.com/en/1.10/intro/tutorial01/，如有错译或理解偏差，请不吝批评指正，先行谢过！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-11-06T07:55:00.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="码出你的第一个Django app——Django官方教程(一)">
+<meta name="twitter:description" content="译者:  官方原文链接https://docs.djangoproject.com/en/1.10/intro/tutorial01/，如有错译或理解偏差，请不吝批评指正，先行谢过！">
+  
+    <link rel="alternate" href="/atom.xml" title="孔天逸&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孔天逸&#39;Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">いらしゃいませ。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://kongtianyi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/Django-Lesson-1" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/06/python/Django-Lesson-1/" class="article-date">
+  <time datetime="2016-11-06T07:54:12.000Z" itemprop="datePublished">2016-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      码出你的第一个Django app——Django官方教程(一)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>译者:</strong></p>
+<p> 官方原文链接<a href="https://docs.djangoproject.com/en/1.10/intro/tutorial01/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.10/intro/tutorial01/</a>，如有错译或理解偏差，请不吝批评指正，先行谢过！</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="码出你的第一个Django-app，第一部分"><a href="#码出你的第一个Django-app，第一部分" class="headerlink" title="码出你的第一个Django app，第一部分"></a>码出你的第一个Django app，第一部分</h1><p>让我们通过实例来学习。</p>
+<p>这个教程会带领你创建一个基础的投票应用。</p>
+<p>本教程由两部分组成：</p>
+<ul>
+<li>一个供用户查看和投票的公共站点</li>
+<li>一个供管理员对投票进行增删改查的站点</li>
+</ul>
+<p>我们假设你已经安装好了Django。你可以用以下命令确定Django是否已经安装好并且查看其版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python -m django --version</span><br></pre></td></tr></table></figure>
+<p>如果Django已经安装好，你会看到你所安装的版本。如果没有安装好，你会看到错误信息“No module named django”。</p>
+<p>这篇教程是写给Django 1.10和Python 3.4或更新的版本的。如果Django的版本不匹配，你可以在<a href="https://docs.djangoproject.com/en/1.10/intro/tutorial01/" target="_blank" rel="noopener">本页</a>的右下角的版本选择工具处找到你所使用版本对应的教程，或者把你的Django更新到最新的版本。如果你仍然在使用Python 2.7，你需要像注释里所描述的那样对代码进行微调。</p>
+<p>可以在<a href="https://docs.djangoproject.com/en/1.10/topics/install/" target="_blank" rel="noopener">How to install Django</a>找到卸载旧版本并安装新版的办法。</p>
+<blockquote>
+<p><strong>在哪里寻求帮助</strong></p>
+</blockquote>
+<blockquote>
+<p>如果你在学习本教程中碰到了难题，请发送一个信息给<a href="https://docs.djangoproject.com/en/1.10/internals/mailing-lists/#django-users-mailing-list" target="_blank" rel="noopener">django-users</a>或者访问<a href="http://freenode.net/" target="_blank" rel="noopener">freenode.net</a>去和其他的Django使用者讨论，看是否有人能帮助你。</p>
+</blockquote>
+<h2 id="创建一个工程"><a href="#创建一个工程" class="headerlink" title="创建一个工程"></a>创建一个工程</h2><p>如果这是你第一次使用Django，你需要注意一些初始化好的设置。也就是说，你需要自动生成一些建立Django工程的代码——一批对一个Django实例的配置，包括数据库配置，Django特定的选项和应用特定的配置。</p>
+<p>在命令行中，<strong>cd</strong>进入一个你想存放你的代码的目录，然后执行下面的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ django-admin startproject mysite</span><br></pre></td></tr></table></figure>
+<p>这时会在你当前目录下创建一个<strong>mysite</strong>目录。如果没有效果，参见<a href="https://docs.djangoproject.com/en/1.10/faq/troubleshooting/#troubleshooting-django-admin" target="_blank" rel="noopener"> Problems running django-admin</a></p>
+<blockquote>
+<p><strong>注</strong></p>
+</blockquote>
+<blockquote>
+<p>当你给工程取名时，应当避免与Python的内置库或者Django的模<br>块重名。特别说明一下，就是说你得避免取像<strong>django</strong>这样的名字（这与Django自身相冲突）或<br>者<strong>test</strong>这样的名字（这与Python的内置包冲突）。 </p>
+</blockquote>
+<p>　</p>
+<blockquote>
+<p><strong>该把代码放在哪？</strong></p>
+</blockquote>
+<blockquote>
+<p>如果从前你从事朴素的PHP的开发（不使用时髦的框架），你可能曾经把代码放到Web服务器的root文件里（一个类似于<strong>/var/www</strong>的地方）。使用Django时，你不能再那样做了。把Python代码全放在root文件里不是个好主意，因为其他人可能会通过Web去看你的源代码。这很不安全。</p>
+</blockquote>
+<p>让我们看看<strong>startproject</strong>都创建了什么吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysite/</span><br><span class="line">    manage.py</span><br><span class="line">    mysite/</span><br><span class="line">        __init__.py</span><br><span class="line">        settings.py</span><br><span class="line">        urls.py</span><br><span class="line">        wsgi.py</span><br></pre></td></tr></table></figure>
+<p>这些文件是：</p>
+<ul>
+<li>外层的<strong>mysite/</strong>根目录仅作为你工程的容器。它的名字对Django没有任何影响；你可以随便对它进行重命名。</li>
+<li><strong>manage.py</strong>：一个命令行工具，它提供多种方式让你与Django进行交互。你可以在<a href="https://docs.djangoproject.com/en/1.10/ref/django-admin/" target="_blank" rel="noopener">django-admin and manage.py</a>阅读有关<strong>manage.py</strong>的所有细节。</li>
+<li>内层的<strong>mysite/</strong>目录是你工程的真正的Python包。它的名字是Python包名，在引用(import)文件的时候你都会用到它（比如<strong>mysite.urls</strong>）。</li>
+<li><strong>mysite/__init__.py</strong>：一个空文件，它的作用是告诉Python这个目录需要被认作是一个Python包。如果你是个Python初学者，请在Python的官方文档里阅读<a href="https://docs.python.org/3/tutorial/modules.html#tut-packages" target="_blank" rel="noopener">more about packages</a>。</li>
+<li><strong>mysite/settings.py</strong>：Django工程的设置/配置文件。<a href="https://docs.djangoproject.com/en/1.10/topics/settings/" target="_blank" rel="noopener">Django settings</a>这篇文章会告诉你它是如何工作的。</li>
+<li><strong>mysite/urls.py</strong>：这个Django工程的URL声明；可以理解为你的Django驱动的站点的“目录”。你可以在<a href="https://docs.djangoproject.com/en/1.10/topics/http/urls/" target="_blank" rel="noopener">URL dispatcher</a>阅读更多关于URLs的相关内容。</li>
+<li><strong>mysite/wsgi.py</strong>：一个WSFI-compatible Web服务器的入口。可以查看<a href="https://docs.djangoproject.com/en/1.10/howto/deployment/wsgi/" target="_blank" rel="noopener"> How to deploy with WSG</a>了解更多细节。</li>
+</ul>
+<hr>
+<h2 id="开发服务器"><a href="#开发服务器" class="headerlink" title="开发服务器"></a>开发服务器</h2><p>让我们来证实一下你的Django工程是否能工作。进入外层的<strong>mysite</strong>目录中，如果你还没准备好，就执行了下面这条命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python manage.py runserver</span><br></pre></td></tr></table></figure>
+<p>你会在命令行中看到以下输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Performing system checks...</span><br><span class="line"></span><br><span class="line">System check identified no issues (0 silenced).</span><br><span class="line"></span><br><span class="line">You have unapplied migrations; your app may not work properly until they are applied.</span><br><span class="line">Run &apos;python manage.py migrate&apos; to apply them.</span><br><span class="line"></span><br><span class="line">November 04, 2016 - 15:50:53</span><br><span class="line">Django version 1.10, using settings &apos;mysite.settings&apos;</span><br><span class="line">Starting development server at http://127.0.0.1:8000/</span><br><span class="line">Quit the server with CONTROL-C.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注</strong><br>先忽略掉这个有关未应用数据库搬移的警告吧；我们稍后再处理有关数据库的问题。</p>
+</blockquote>
+<p>你已经开启了Django的开发服务器——一个用纯Python写的轻量级的Web服务器。我们把它集成在了Django里以便于你很快的开发应用，不用先纠结于配置一个发行服务器——比如Apache——直到你已经写好了代码准备上线。</p>
+<p>现在我得说明一点：<strong>不要</strong>把这个服务器用到任何生产环境中。它仅仅是给开发过程使用的。（我们是做Web框架的，不是搞Web服务的。）</p>
+<p>现在服务器已经运行起来了，用你的浏览器访问<a href="http://127.0.0.1:8000/" target="_blank" rel="noopener">http://127.0.0.1:8000/</a>。你会看到令人愉悦的，浅蓝色的“Welcome to Django”页。它好使！</p>
+<blockquote>
+<p><strong>更改端口</strong></p>
+<p>在默认的情况下，<strong>runserver</strong>命令在8000端口开启服务。</p>
+</blockquote>
+<blockquote>
+<p>如果你想更改服务端口，给它传一个命令行参数。举个例子，下面这条命令将在8080端口开启服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; $ python manage.py runserver 8080</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>如果你想更改服务的IP，那么把它同端口一起作为参数。这样来监听所有的公共IP（如果你想通过其他电脑来查看你的作品），使用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; $ python manage.py runserver 0.0.0.0:8000</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>有关<strong><a href="https://docs.djangoproject.com/en/1.10/ref/django-admin/#django-admin-runserver" target="_blank" rel="noopener">runserver</a></strong>完整的文档请戳链接 </p>
+</blockquote>
+<p>　</p>
+<blockquote>
+<p> <strong>runserver的自动重新加载</strong></p>
+<p>这个开发服务器会在每次处理请求的时候自动重新加载Python代码。你在修改代码后不用重启服务就能生效。可是，像添加文件这种操作不会引发自动加载，所以在这种情况下你得手动重启一下服务。</p>
+</blockquote>
+<hr>
+<h2 id="创建投票app"><a href="#创建投票app" class="headerlink" title="创建投票app"></a>创建投票app</h2><p>现在你的环境——一个“project”——已经创建完毕，现在要做的是开始真正的工作。</p>
+<p>每一个用Django写的应用都遵循一个确定的规则来创建Python包，Django提供一个工具可以自动生成一个app的基础目录结构，这样你就能专心于代码的写作而不是规划目录。</p>
+<blockquote>
+<p><strong>Project vs. app</strong></p>
+<p>Project和app的区别在哪里呢？App是一个具有特定效用的Web应用，比如说一个日志系统，或是一个公共记录亦或是一个简单的投票应用。而project是许多app和相关配置组合起来的一个独特的网络站点。一个project能包含许多app。一个app可以被许多project所使用。</p>
+</blockquote>
+<p>你的app可以放在你的<a href="https://docs.python.org/3/tutorial/modules.html#tut-searchpath" target="_blank" rel="noopener">Python path</a>能找到的任何地方。在本教程中，我们把投票app创建在和<strong>manage.py</strong>同级的目录里，这样它就能被当作自己的顶层模块被引用(import)，而不是<strong>mysite</strong>的子模块。</p>
+<p>在创建app之前，确保命令执行在<strong>manage.py</strong>的同级目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python manage.py startapp polls</span><br></pre></td></tr></table></figure>
+<p>这条命令创建了一个名为<strong>polls</strong>的目录，完全展开如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">polls/</span><br><span class="line">    __init__.py</span><br><span class="line">    admin.py</span><br><span class="line">    apps.py</span><br><span class="line">    migrations/</span><br><span class="line">        __init__.py</span><br><span class="line">    models.py</span><br><span class="line">    tests.py</span><br><span class="line">    views.py</span><br></pre></td></tr></table></figure>
+<p>我们将用这个目录结构来组建应用。</p>
+<hr>
+<h2 id="码出第一个视图-view"><a href="#码出第一个视图-view" class="headerlink" title="码出第一个视图(view)"></a>码出第一个视图(view)</h2><p>开始写第一个view吧！打开<strong>polls/views.py</strong>然后把下面的代码拷贝进去：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from django.http import HttpResponse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    return HttpResponse(&quot;Hello, world. You&apos;re at the polls index.&quot;)</span><br></pre></td></tr></table></figure>
+<p>这是Django里最最简单的view了。要使用这个view，还需要给他映射一个URL，所以我们需要一个URL的配置文件(URLconfs)。</p>
+<p>在polls目录下创建一个名为<strong>urls.py</strong>的URL配置文件吧。你的app目录现在应该是这个样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">polls/</span><br><span class="line">    __init__.py</span><br><span class="line">    admin.py</span><br><span class="line">    apps.py</span><br><span class="line">    migrations/</span><br><span class="line">        __init__.py</span><br><span class="line">    models.py</span><br><span class="line">    tests.py</span><br><span class="line">    urls.py</span><br><span class="line">    views.py</span><br></pre></td></tr></table></figure>
+<p>把下面这段代码放到<strong>polls/urls.py</strong>里：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import url</span><br><span class="line"></span><br><span class="line">form . import views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    url(r&apos;^$&apos;, views.index, name=&apos;index&apos;)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>下一步要做的是在根URL配置(root URLconf)里注册<strong>polls.urls</strong>模块。在<strong>mysite/urls.py</strong>中，增加对<strong>django.conf.urls.include</strong>的引用(import)，然后在<strong>urlpatterns</strong>列表里增加一则<strong>include()</strong>，此时<strong>mysite/urls.py</strong>如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import include, url</span><br><span class="line">from django.contrib import admin</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    url(r&apos;^polls/&apos;, include(&apos;polls.urls&apos;)),</span><br><span class="line">    url(r&apos;^admin/&apos;, admin.site.urls),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><strong>include()</strong>函数能够调用其它的URL配置文件(URLconfs)。可以看到给<strong>include()</strong>配置的正则表达式结尾并不是<strong>$</strong>（匹配结尾的字符）而是一个反斜杠。每当Django遇到<strong>include()</strong>，他就会把已匹配的部分砍掉然后把剩下的部分传入被include的URL配置文件(URLconf)里进一步匹配。</p>
+<p><strong>include()</strong>被设计的目的是为了方便我们掌控URL。只要polls的相关URL在配置文件里（<strong>polls/urls.py</strong>）配置好了，那么这个配置文件被放在哪里就无所谓了，他可以被放在“/polls/”，或是“/fun_pulls/”,亦或“/content/polls/”等等，app都能够正常的工作。</p>
+<blockquote>
+<p><strong>何时使用<em>inlcude()</em></strong></p>
+<p> 当引用其他URL配置（URL patterns）的时候都要使用此函数。<strong>admin.site.urls</strong>是唯一的例外。 </p>
+</blockquote>
+<p>　</p>
+<blockquote>
+<p><strong>我说的跟你看到的驴唇不对马嘴？</strong></p>
+<p>如果你所看到的是<strong>include(admin.site.urls)</strong>而不是<strong>admin.site.urls</strong>，你可能正在使用一个老版本的Django，这个教程并不适合。你可以选择去找老版的教程，或者，更新你的Django版本。</p>
+</blockquote>
+<p>现在你已经在URLconf里绑定好了一个<strong>index</strong> view。那么就来证实一下好使不好使吧！执行下面这则命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python manage.py runserver</span><br></pre></td></tr></table></figure>
+<p>用浏览器访问<a href="http://localhost:8000/polls/" target="_blank" rel="noopener">http://localhost:8000/polls/</a>，你会看到你在<strong>index</strong> view里定义的字样：“Hello, world. You’re at the polls index.”。</p>
+<p><strong>url()</strong>函数有四个参数，两个是必须的：<strong>regex</strong>和<strong>view</strong>，还有两个是可选的：<strong>kwargs</strong>和<strong>name</strong>。现在我们有必要去看看这四个参数都是做什么的。</p>
+<h3 id="url-的参数regex"><a href="#url-的参数regex" class="headerlink" title="url()的参数regex"></a>url()的参数regex</h3><p>“regex”是“regular expression”(正则表达式)的简写，正则表达式是一种对字符串进行模式匹配的语法，当然在这里，它是用来匹配一定格式的URL的。Django收到用户发来的请求URL后，会在列表里用正则表达式对它挨个进行匹配，直到找到一个匹配成功。</p>
+<p>注意，正则表达式不会匹配GET或POST参数，也不会去匹配域名。举个例子，假如服务器收到请求<strong><a href="http://www.example.com/myapp/" target="_blank" rel="noopener">http://www.example.com/myapp/</a></strong>，URLconf会去匹配查找<strong>myapp</strong>；假如是收到<strong><a href="http://www.example.com/myapp/?page=3" target="_blank" rel="noopener">http://www.example.com/myapp/?page=3</a></strong>，URLconf也会去匹配<strong>myapp/</strong>。</p>
+<p>如果你不太懂正则表达式，可以去看一下<a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank" rel="noopener">Wikipedia’s entry</a>或者去看看<a href="https://docs.python.org/3/library/re.html#module-re" target="_blank" rel="noopener">re</a>模块的文档。还有，Jeffrey Fried写的O’Reilly book“Mastering Regular expressions”也不错。当然在这里你不必要十分精通正则表达式，只要知道怎样去匹配常用的模式就好了。事实上，复杂的正则匹配的查找能力并不尽如人意，所以你不必太过依赖它。</p>
+<p>最后，一个性能说明：这些正则表达式会在URLconf模块加载的时候被编译。它们非常快（在不像上文中提到的十分复杂的情况下）。</p>
+<hr>
+<h3 id="url-的参数view"><a href="#url-的参数view" class="headerlink" title="url()的参数view"></a>url()的参数view</h3><p>当Django用一个正则表达式匹配成功了请求的URL，Django就会调用一个特定的view函数，把<strong>HttpRequest</strong>对象当作这个函数的第一个参数，其余通过正则“捕获”的值作为其他参数。如果是简单的匹配，参数会是下标的形式；如果是通过名字匹配，参数会是键值对的形式。我们一会儿会通过例子来介绍这些。</p>
+<hr>
+<h3 id="url-的参数kwargs"><a href="#url-的参数kwargs" class="headerlink" title="url()的参数kwargs"></a>url()的参数kwargs</h3><p>随意的键值对参数，它们会以字典的形式被提交到指向的view。本教程不使用这个功能。</p>
+<hr>
+<h3 id="url-的参数name"><a href="#url-的参数name" class="headerlink" title="url()的参数name"></a>url()的参数name</h3><p>在Django中给你的URL命名可以让你很方便的在别的地方使用它，尤其是在模板中。这强大的功能可以让你仅仅修改一个URL模块文件就能让这个改变全局生效。</p>
+<p>如果你对本部分介绍的请求响应流程已经理解，那么就请开启<a href="https://docs.djangoproject.com/en/1.10/intro/tutorial02/" target="_blank" rel="noopener">本教程的第二部分</a>（译者注：这是源链接）对数据库操作的学习吧！</p>
+<blockquote>
+<p><strong>译者：</strong></p>
+<p> 经常听老师说外国文献虽然都很厚，但是都是非常易懂的言语，确实如此。各位不妨移步去看官网的英文原版教程。如果真的十分头疼英语而且觉得我翻译的还能看，但是我还没更新，就请催更吧^_^!</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://kongtianyi.github.io/2016/11/06/python/Django-Lesson-1/" data-id="cjqtftimz008ye8u8ol25hx2v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Django/">Django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/07/python/Ubuntu16.04-python3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Ubuntu16.04使用python3.x相关
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/05/python/Scrapy-Lesson-6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Scrapy定向爬虫教程(六)——分析表单并回帖</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lisence/">Lisence</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/commen/">commen</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲情偶记/">闲情偶记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lisence/">Lisence</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-zerorpc/">Python zerorpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commen/">commen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/next/">next</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qsort/">qsort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大型/">大型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据分析/">数据分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/诗/">诗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/闲情偶记/">闲情偶记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合框架/">集合框架</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Hadoop/" style="font-size: 11.67px;">Hadoop</a> <a href="/tags/JAVA/" style="font-size: 11.67px;">JAVA</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Lisence/" style="font-size: 10px;">Lisence</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-zerorpc/" style="font-size: 10px;">Python zerorpc</a> <a href="/tags/Scrapy/" style="font-size: 18.33px;">Scrapy</a> <a href="/tags/Ubuntu/" style="font-size: 11.67px;">Ubuntu</a> <a href="/tags/commen/" style="font-size: 10px;">commen</a> <a href="/tags/hash/" style="font-size: 11.67px;">hash</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/html/" style="font-size: 11.67px;">html</a> <a href="/tags/js/" style="font-size: 13.33px;">js</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/next/" style="font-size: 11.67px;">next</a> <a href="/tags/qsort/" style="font-size: 10px;">qsort</a> <a href="/tags/大型/" style="font-size: 10px;">大型</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/诗/" style="font-size: 13.33px;">诗</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/闲情偶记/" style="font-size: 15px;">闲情偶记</a> <a href="/tags/集合框架/" style="font-size: 10px;">集合框架</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/01/12/prose/prose-1/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/python/BloomFilterRedis/">基于Redis的布隆过滤器的实现</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/27/python/Scrapy+PhantomJS+Selenium动态爬虫/">Scrapy+PhantomJS+Selenium动态爬虫</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/16/prose/prose-4/">故意的意识流</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/02/python/Python-excel-demo/">Python读写/追加excel文件Demo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 孔天逸<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
