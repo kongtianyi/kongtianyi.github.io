@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -97,7 +97,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -366,35 +366,15 @@
 
       
         
-          
-            <h1 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h1><p>包含一个基于Redis的布隆过滤器的实现，以及应用到Scrapy中的Demo。</p>
+          <h1 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h1><p>包含一个基于Redis的布隆过滤器的实现，以及应用到Scrapy中的Demo。</p>
 <p>地址：<a href="https://github.com/kongtianyi/BloomFilterRedis" target="_blank" rel="noopener">BloomFilterRedis</a></p>
-<hr>
-<h1 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h1><p>网上有很多介绍，推荐《数学之美》，介绍的很详尽，此处不再赘述。</p>
-<hr>
-<h1 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h1><p>布隆过滤器中需要n个哈希函数，我使用的是<a href="http://www.partow.net" target="_blank" rel="noopener">Arash Partow</a>提供的<a href="http://www.partow.net/programming/hashfunctions/index.html" target="_blank" rel="noopener">常见哈希函数</a>。</p>
-<hr>
-<h1 id="建立在Redis上的布隆过滤器"><a href="#建立在Redis上的布隆过滤器" class="headerlink" title="建立在Redis上的布隆过滤器"></a>建立在Redis上的布隆过滤器</h1><p>Redis中有一个数据结构叫做Bitmap(下方有官网详解)，它提供一个最大长度为512MB（2^32）的位数组。我们可以把它提供给布隆过滤器做位数组。</p>
-<p>根据《数学之美》中给出的数据，在使用8个哈希函数的情况下，512MB大小的位数组在误报率万分之五的情况下可以对约两亿的url去重。而若单纯的使用set()去重的话，以一个url64个字节记，两亿url约需要128GB的内存空间,不敢想象。</p>
-<p>我使用的策略是使用哈希函数算出的哈希值对2^32取模，填入bitmap中。</p>
-<hr>
-<h1 id="Reids之Bitmap"><a href="#Reids之Bitmap" class="headerlink" title="Reids之Bitmap"></a>Reids之Bitmap</h1><p>以下内容翻译自官网<a href="http://www.redis.cn/topics/data-types-intro.html#bitmaps" target="_blank" rel="noopener">http://www.redis.cn/topics/data-types-intro.html#bitmaps</a>，<br>英语水平有限，有些地方选择了意译，大佬路过还请不吝赐教，先行谢过～</p>
-<p>Bitmap不是一个确切的数据类型，而是基于String类型定义的一系列面向位操作的方法。因为String是二进制安全的并且它们的最大长度是512MB，<br>所以String类型很合适去作为一个2^32长度的位数组。</p>
-<p>位操作方法可以被分为两组：一、对单一位的操作，比如设置某一位为1或0，或者得到这一位的值；二、对一组位的操作，比方说计算一定范围内的1的个数（比如计数）<br>bitmap一个最大的优势是它通常能在存储信息的时候节省大量空间。比方说一个用增量ID来辨别用户的系统，可以用仅仅512MB的空间来标识40亿个用户是否想要接受通知。</p>
-<p>使用SETBIT和GETBIT命令来对位进行置数和检索：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; setbit key 10 1</span><br><span class="line">(integer) 1</span><br><span class="line">&gt; getbit key 10</span><br><span class="line">(integer) 1</span><br><span class="line">&gt; getbit key 11</span><br><span class="line">(integer) 0</span><br></pre></td></tr></table></figure>
-<p>SETBIT 如上所示，意思是将第10位置位为1，第二个参数可为0或1。如果设置的位超出了当前String的长度，那么会自动增长。（最长2^32，下同）<br>GETBIT 如上所示，返回第10位和第11位的数据，分别是1和0。如果查找的位超出了当前String的长度，那么会返回0。</p>
-<p>接下来是三个对一组位进行操作的命令:<br>BITOP 执行不同字符串之间的逐位操作。所提供的操作有AND，OR，XOR和NOT。BITCOUNT<br>BITCOUNT 计数,返回bitmap里值为1的位的个数.<br>BITPOS 返回第一个0或1的位置<br>BITPOS和BITCOUNT不仅可以作用于整个bitmap，还可以作用于一定的范围,下面是一个BITCOUNT的例子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; setbit key 0 1</span><br><span class="line">(integer) 0</span><br><span class="line">&gt; setbit key 100 1</span><br><span class="line">(integer) 0</span><br><span class="line">&gt; bitcount key</span><br><span class="line">(integer) 2</span><br></pre></td></tr></table></figure>
-<p>应用实例略……</p>
-<hr>
-<h1 id="整合进Scrapy"><a href="#整合进Scrapy" class="headerlink" title="整合进Scrapy"></a>整合进Scrapy</h1><p>Scrapy中可以在<code>settings.py</code>中通过<code>DUPEFILTER_CLASS</code>配置过滤器，github上给出了<a href="(https://github.com/kongtianyi/BloomFilterRedis">示例工程</a>)。</p>
-<hr>
-<h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><p>起初的验证策略是：使用scrapy框架从一个百度百科页面出发，提取页面内其它百科词条的链接，在过滤器内将过滤掉的url记录在本地文件<br><code>filted.txt</code>中，将正确请求的到的结果存入mongoDB。</p>
-<p>在起初测试时发现<code>filted.txt</code>中记录的过滤掉的url中百分之九十九都不在mongoDB内，注意到已过滤掉约1万条url，而mongoDB中仅有300条，<br>使用<code>bitcount key</code>命令查看redis中的bitmap中的值为1的位的个数，发现有约10万。而mongoDB中的300条数据至多置位300*8=2400位，显<br>然哪里出了问题。经分析，这是因为大量经过过滤器的请求尚存在于scrapy的请求队列中，未被发出，所以mongoDB里也不会有相应记录。</p>
-<p>所以为了验证布隆过滤器的可靠性，在过滤器过滤前将所有的url都存入<code>allurl.txt</code>文件，等文件内url达到一定规模后，与<code>filted.txt</code>进行<br>相应处理——编写脚本计算误报率。经验证，在对百度百科约70万条url进行处理后，过滤约40万条，误判量为0。此验证规模甚小，但笔者近期无具体大<br>规模去重需求，欢迎有需求或有兴趣的同仁使用并反馈。</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/04/30/python/BloomFilterRedis/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2115,7 +2095,7 @@ var timer = setInterval(function () {
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 
@@ -2182,9 +2162,10 @@ var timer = setInterval(function () {
   
 
 
+
+
   
-
-
+  
 
 
 
@@ -2226,7 +2207,12 @@ var timer = setInterval(function () {
 
   
   
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 
