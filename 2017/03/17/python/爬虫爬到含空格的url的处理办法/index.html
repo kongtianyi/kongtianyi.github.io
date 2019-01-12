@@ -14,6 +14,13 @@
 
 
 
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
 
 
 
@@ -59,7 +66,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="16x16" href="/image/favicon.png?v=5.1.4">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
@@ -79,18 +86,18 @@
 
 
 
-<meta name="description" content="道友问我的一个问题，之前确实没遇见过，在此记录一下。 问题描述在某网站主页提取url进行迭代，爬虫请求主页时没有问题，返回正常，但是在访问在主页提取到的url时出现了400状态码(400 Bad Request)。 结论先贴出结论来，如果url里有空格的话，要把空格替换成%20，也就是url编码，否则就会出现400。 解决过程首先百度了一下400状态码什么意思：  400页面是当用户在打开网页时，">
+<meta name="description" content="道友问我的一个问题，之前确实没遇见过，在此记录一下。 问题描述在某网站主页提取url进行迭代，爬虫请求主页时没有问题，返回正常，但是在访问在主页提取到的url时出现了400状态码(400 Bad Request)。">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="爬虫爬到含空格的url的处理办法">
 <meta property="og:url" content="http://kongtianyi.github.io/2017/03/17/python/爬虫爬到含空格的url的处理办法/index.html">
 <meta property="og:site_name" content="孔天逸&#39;Blog">
-<meta property="og:description" content="道友问我的一个问题，之前确实没遇见过，在此记录一下。 问题描述在某网站主页提取url进行迭代，爬虫请求主页时没有问题，返回正常，但是在访问在主页提取到的url时出现了400状态码(400 Bad Request)。 结论先贴出结论来，如果url里有空格的话，要把空格替换成%20，也就是url编码，否则就会出现400。 解决过程首先百度了一下400状态码什么意思：  400页面是当用户在打开网页时，">
+<meta property="og:description" content="道友问我的一个问题，之前确实没遇见过，在此记录一下。 问题描述在某网站主页提取url进行迭代，爬虫请求主页时没有问题，返回正常，但是在访问在主页提取到的url时出现了400状态码(400 Bad Request)。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-05-11T12:54:01.531Z">
+<meta property="og:updated_time" content="2019-01-12T15:34:04.466Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爬虫爬到含空格的url的处理办法">
-<meta name="twitter:description" content="道友问我的一个问题，之前确实没遇见过，在此记录一下。 问题描述在某网站主页提取url进行迭代，爬虫请求主页时没有问题，返回正常，但是在访问在主页提取到的url时出现了400状态码(400 Bad Request)。 结论先贴出结论来，如果url里有空格的话，要把空格替换成%20，也就是url编码，否则就会出现400。 解决过程首先百度了一下400状态码什么意思：  400页面是当用户在打开网页时，">
+<meta name="twitter:description" content="道友问我的一个问题，之前确实没遇见过，在此记录一下。 问题描述在某网站主页提取url进行迭代，爬虫请求主页时没有问题，返回正常，但是在访问在主页提取到的url时出现了400状态码(400 Bad Request)。">
 
 
 
@@ -100,7 +107,7 @@
     root: '/',
     scheme: 'Gemini',
     version: '5.1.4',
-    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -145,7 +152,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -161,7 +168,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">いらしゃいませ。</p>
+        <h1 class="site-subtitle" itemprop="description">いらしゃいませ。</h1>
       
   </div>
 
@@ -280,7 +287,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">爬虫爬到含空格的url的处理办法</h1>
+          <h2 class="post-title" itemprop="name headline">爬虫爬到含空格的url的处理办法</h2>
         
 
         <div class="post-meta">
@@ -346,8 +353,8 @@
 
           
             <span class="post-meta-divider">|</span>
-            <span class="page-pv">已有<i class="fa fa-file-o"></i>
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>位佳客驻足品评
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
 
@@ -370,6 +377,7 @@
       
         <p>道友问我的一个问题，之前确实没遇见过，在此记录一下。</p>
 <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>在某网站主页提取url进行迭代，爬虫请求主页时没有问题，返回正常，但是在访问在主页提取到的url时出现了400状态码(400 Bad Request)。</p>
+<a id="more"></a>
 <h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>先贴出结论来，如果url里有空格的话，要把空格替换成<code>%20</code>，也就是url编码，否则就会出现400。</p>
 <h1 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h1><p>首先百度了一下400状态码什么意思：</p>
 <blockquote>
@@ -394,7 +402,7 @@
     
       <div>
         <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>姜太公钓鱼~</div>
+  <div>有钱的捧个钱场~</div>
   <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
     <span>打赏</span>
   </button>
@@ -545,7 +553,7 @@
               <img class="site-author-image" itemprop="image" src="/image/avatar.jpg" alt="孔天逸">
             
               <p class="site-author-name" itemprop="name">孔天逸</p>
-              <p class="site-description motion-element" itemprop="description">Hexoは美味い。</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
           <nav class="site-state motion-element">
@@ -739,12 +747,12 @@
 
 
 
+
+
+
+
   
   
-
-
-
-
 
 
 
@@ -787,7 +795,7 @@
 
   
   
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+    <script type="text/javascript" src="/lib/three/canvas_sphere.min.js"></script>
   
 
 
