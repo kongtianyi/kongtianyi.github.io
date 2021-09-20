@@ -168,7 +168,7 @@
       </a>
     </div>
       
-        <h1 class="site-subtitle" itemprop="description">いらしゃいませ。</h1>
+        <h1 class="site-subtitle" itemprop="description">人間って、不自由な生き物ね。</h1>
       
   </div>
 
@@ -256,6 +256,367 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kongtianyi.github.io/2016/06/30/python/Python-note-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孔天逸">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/image/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="孔天逸'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/30/python/Python-note-3/" itemprop="url">Python学习笔记（三）——基础知识</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-30T15:26:12+08:00">
+                2016-06-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2016/06/30/python/Python-note-3/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://kongtianyi.github.io/2016/06/30/python/Python-note-3/" class="cy_cmt_count" data-xid="2016/06/30/python/Python-note-3/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="学习来源"><a href="#学习来源" class="headerlink" title="学习来源"></a>学习来源</h4><p>本笔记的学习资源是<a href="http://www.imooc.com" target="_blank" rel="noopener">慕课网</a>。</p>
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>Python的注释以<code>#</code>开头，不同于C/C++/JAVA中的双斜杠，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print &apos;hello world&apos;  #我是注释</span><br></pre></td></tr></table></figure>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><ul>
+<li>命名规范：变量名必须是大小写英文、数字和下划线（_）的组合，且不能用数字开头。</li>
+<li><p>不必声明变量类型，等号<code>=</code>是赋值语句，可以把任意数据类型赋值给变量，同一个变量可以反复赋值，而且可以是不同类型的变量，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = 123    # a是整数</span><br><span class="line">print a</span><br><span class="line">a = &apos;imooc&apos;   # a变为字符串</span><br><span class="line">print a</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p> 这种变量本身类型不固定的语言称之为动态语言，与之对应的是静态语言。</p>
+<h4 id="多行字符串"><a href="#多行字符串" class="headerlink" title="多行字符串"></a>多行字符串</h4><p> 用<code>&#39;&#39;&#39;...&#39;&#39;&#39;</code>表示：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&apos;&apos;&apos;Line 1</span><br><span class="line">Line 2</span><br><span class="line">Line 3&apos;&apos;&apos;</span><br></pre></td></tr></table></figure>
+<h4 id="raw字符串"><a href="#raw字符串" class="headerlink" title="raw字符串"></a>raw字符串</h4><p>如果一个字符串包含很多需要转义的字符，对每一个字符都进行转义会很麻烦。为了避免这种情况，我们可以在字符串前面加个前缀 r ，表示这是一个 raw 字符串，里面的字符就不需要转义了。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r&apos;\(~_~)/ \(~_~)/&apos;</span><br></pre></td></tr></table></figure>
+<p>还可以在多行字符串前面添加 r ，把这个多行字符串也变成一个raw字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r&apos;&apos;&apos;Python is created by &quot;Guido&quot;.</span><br><span class="line">It is free and easy to learn.</span><br><span class="line">Let&apos;s start learn Python in imooc!&apos;&apos;&apos;</span><br></pre></td></tr></table></figure>
+<h4 id="unicode字符串"><a href="#unicode字符串" class="headerlink" title="unicode字符串"></a>unicode字符串</h4><p>以Unicode表示的字符串用u’…’表示，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print u&apos;中文&apos;</span><br><span class="line">中文</span><br></pre></td></tr></table></figure>
+<p>注意:</p>
+<ul>
+<li>历史原因， 不加 u 为ASCII编码，中文不能正常显示。</li>
+<li>Unicode字符串除了多了一个 u 之外，与普通字符串没啥区别，转义字符和多行表示法仍然有效。</li>
+<li><p>如果中文字符串在Python环境下遇到 UnicodeDecodeError，这是因为.py文件保存的格式有问题。可以在第一行添加注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br></pre></td></tr></table></figure>
+<p>目的是告诉Python解释器，用UTF-8编码读取源代码。然后用编辑器另存为… 并选择UTF-8格式保存。</p>
+</li>
+</ul>
+<h4 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h4><p>与C语言相同，整形与整形运算结果还是整形，但是整形与浮点型混合运算结果为浮点型。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kongtianyi.github.io/2016/06/30/python/Python-note-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孔天逸">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/image/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="孔天逸'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/30/python/Python-note-2/" itemprop="url">Python学习笔记（二）——数据类型和print语句</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-30T11:44:34+08:00">
+                2016-06-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2016/06/30/python/Python-note-2/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://kongtianyi.github.io/2016/06/30/python/Python-note-2/" class="cy_cmt_count" data-xid="2016/06/30/python/Python-note-2/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="学习来源"><a href="#学习来源" class="headerlink" title="学习来源"></a>学习来源</h4><p>本笔记的学习资源是<a href="http://www.imooc.com" target="_blank" rel="noopener">慕课网</a>。</p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>计算机顾名思义就是可以做数学计算的机器，因此，计算机程序理所当然地可以处理各种数值。但是，计算机能处理的远不止数值，还可以处理文本、图形、音频、视频<br>等各种各样的数据，不同的数据，需要定义不同的数据类型。在Python中，能够直接处理的数据类型有以下几种：</p>
+<h4 id="一、整数"><a href="#一、整数" class="headerlink" title="一、整数"></a>一、整数</h4><p>Python可以处理任意大小的整数，当然包括负整数，在Python程序中，整数的表示方法和数学上的写法一模一样，例如：<code>1</code>，<code>100</code>，<code>-8080</code>，<code>0</code>，等等。<br>计算机由于使用二进制，所以，有时候用十六进制表示整数比较方便，十六进制用<code>0x</code>前缀和0-9，a-f表示，例如：<code>0xff00</code>，<code>0xa5b4c3d2</code>，等等。</p>
+<h4 id="二、浮点数"><a href="#二、浮点数" class="headerlink" title="二、浮点数"></a>二、浮点数</h4><p>浮点数也就是小数，之所以称为浮点数，是因为按照科学记数法表示时，一个浮点数的小数点位置是可变的，比如，1.23x10^9和12.3x10^8是相等的。浮点数可以用数学写法，如<code>1.23</code>，<code>3.14</code>,<code>-9.01</code>等等。但是对于很大或很小的浮点数，就必须用科学计数法表示，把10用e替代，1.23x10^9就是<code>1.23e9</code>，或者<code>12.3e8</code>，0.000012可以写成<code>1.2e-5</code>，等等。</p>
+<p>整数和浮点数在计算机内部存储的方式是不同的，整数运算永远是精确的（除法难道也是精确的？是的！），而浮点数运算则可能会有四舍五入的误差。</p>
+<h4 id="三、字符串"><a href="#三、字符串" class="headerlink" title="三、字符串"></a>三、字符串</h4><p>字符串是以’’或””括起来的任意文本，比如<code>&#39;abc&#39;</code>，<code>&quot;xyz&quot;</code>等等。请注意，’’或””本身只是一种表示方式，不是字符串的一部分，因此，字符串<code>&#39;abc&#39;</code>只有<code>a</code>，<code>b</code>，<code>c</code>这3个字符。</p>
+<h4 id="四、布尔值"><a href="#四、布尔值" class="headerlink" title="四、布尔值"></a>四、布尔值</h4><p>布尔值和布尔代数的表示完全一致，一个布尔值只有<code>True</code>、<code>False</code>两种值，要么是<code>True</code>，要么是<code>False</code>，在Python中，可以直接用<code>True</code>、<code>False</code>表示布尔值（请注意大小写），也可以通过布尔运算计算出来。</p>
+<p>布尔值可以用<code>and</code>、<code>or</code>和<code>not</code>运算。</p>
+<p><code>and</code>运算是与运算，只有所有都为 True，and运算结果才是 True。</p>
+<p><code>or</code>运算是或运算，只要其中有一个为 True，or 运算结果就是 True。</p>
+<p><code>not</code>运算是非运算，它是一个单目运算符，把 True 变成 False，False 变成 True。</p>
+<h4 id="五、空值"><a href="#五、空值" class="headerlink" title="五、空值"></a>五、空值</h4><p>空值是Python里一个特殊的值，用<code>None</code>表示。None不能理解为0，因为0是有意义的，而None是一个特殊的空值。</p>
+<h4 id="六、print语句"><a href="#六、print语句" class="headerlink" title="六、print语句"></a>六、print语句</h4><p>print语句可以向屏幕上输出指定的文字。比如输出’hello, world’，用代码实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print &apos;hello, world&apos;</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<ul>
+<li><p>当我们在Python交互式环境下编写代码时，&gt;&gt;&gt;是Python解释器的提示符，不是代码的一部分。</p>
+</li>
+<li><p>当我们在文本编辑器中编写代码时，千万不要自己添加 &gt;&gt;&gt;。</p>
+</li>
+</ul>
+<p>print语句也可以跟上多个字符串，用逗号“,”隔开，就可以连成一串输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print &apos;The quick brown fox&apos;, &apos;jumps over&apos;, &apos;the lazy dog&apos;</span><br><span class="line">The quick brown fox jumps over the lazy dog</span><br></pre></td></tr></table></figure>
+<p>print会依次打印每个字符串，遇到逗号“,”会输出一个空格。</p>
+<p>print也可以打印整数，或者计算结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;print 300</span><br><span class="line">300    #运行结果</span><br><span class="line">&gt;&gt;&gt;print 100 + 200</span><br><span class="line">300    #运行结果</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以把计算100 + 200的结果打印得更漂亮一点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print &apos;100 + 200 =&apos;, 100 + 200</span><br><span class="line">100 + 200 = 300     #运行结果</span><br></pre></td></tr></table></figure>
+<p>注意: 对于100 + 200，Python解释器自动计算出结果300，但是，’100 + 200 =’是字符串而非数学公式，Python把它视为字符串。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -995,7 +1356,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1107,13 +1468,13 @@
     <span class="site-uv">
       已有<i class="fa fa-user"></i>
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      位佳客造访
+      位大佬知道这儿有个菜鸡了
     </span>
   
 
   
     <span class="site-pv">
-      已被点击<i class="fa fa-eye"></i>
+      已被公开处刑<i class="fa fa-eye"></i>
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
       次
     </span>
