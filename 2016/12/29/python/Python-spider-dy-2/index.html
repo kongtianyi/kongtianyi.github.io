@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Python爬虫爬取动态页面思路+实例（二） | 孔天逸&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简介上篇Python爬虫爬取动态页面思路+实例（一）提到，爬取动态页面有两种方法  分析页面请求 selenium模拟浏览器行为（这篇介绍这个）  理论上来讲，这种方法可以应对各种动态加载，因为模拟人的行为嘛，如果人自己用浏览器来看网页都加载不出数据来，这网站吃枣药丸。但是它的显著缺点就是——慢。所以一般情况下，这是一种万不得已的方法。 selenium是一种自动化测试的工具（话说这方面我并不懂）">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫爬取动态页面思路+实例（二）">
+<meta property="og:url" content="http://kongtianyi.github.io/2016/12/29/python/Python-spider-dy-2/index.html">
+<meta property="og:site_name" content="孔天逸&#39;Blog">
+<meta property="og:description" content="简介上篇Python爬虫爬取动态页面思路+实例（一）提到，爬取动态页面有两种方法  分析页面请求 selenium模拟浏览器行为（这篇介绍这个）  理论上来讲，这种方法可以应对各种动态加载，因为模拟人的行为嘛，如果人自己用浏览器来看网页都加载不出数据来，这网站吃枣药丸。但是它的显著缺点就是——慢。所以一般情况下，这是一种万不得已的方法。 selenium是一种自动化测试的工具（话说这方面我并不懂）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20161229101500582?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20161229102623479?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20161229102641792?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20161229103032590?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20161229103807906?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20161229104248581?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-01-26T13:02:33.161Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python爬虫爬取动态页面思路+实例（二）">
+<meta name="twitter:description" content="简介上篇Python爬虫爬取动态页面思路+实例（一）提到，爬取动态页面有两种方法  分析页面请求 selenium模拟浏览器行为（这篇介绍这个）  理论上来讲，这种方法可以应对各种动态加载，因为模拟人的行为嘛，如果人自己用浏览器来看网页都加载不出数据来，这网站吃枣药丸。但是它的显著缺点就是——慢。所以一般情况下，这是一种万不得已的方法。 selenium是一种自动化测试的工具（话说这方面我并不懂）">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20161229101500582?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+  
+    <link rel="alternate" href="/atom.xml" title="孔天逸&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孔天逸&#39;Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">人間って、不自由な生き物ね。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://kongtianyi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/Python-spider-dy-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/29/python/Python-spider-dy-2/" class="article-date">
+  <time datetime="2016-12-29T03:18:22.000Z" itemprop="datePublished">2016-12-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python爬虫爬取动态页面思路+实例（二）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>上篇<a href="http://blog.csdn.net/qq_30242609/article/details/53788228" target="_blank" rel="noopener">Python爬虫爬取动态页面思路+实例（一）</a>提到，爬取动态页面有两种方法</p>
+<ul>
+<li>分析页面请求</li>
+<li>selenium模拟浏览器行为（这篇介绍这个）</li>
+</ul>
+<p>理论上来讲，这种方法可以应对各种动态加载，因为模拟人的行为嘛，如果人自己用浏览器来看网页都加载不出数据来，这网站吃枣药丸。但是它的显著缺点就是——<strong>慢</strong>。所以一般情况下，这是一种万不得已的方法。</p>
+<p>selenium是一种自动化测试的工具（话说这方面我并不懂），懂自动化测试的同学不用我介绍，不懂的同学，跟着我的思路走就好了，<strong>不影响</strong>我们写爬虫。</p>
+<p>如何安装selenium我就不介绍了，网上很多教程，如果你在调用Firefox的时候出现了问题，那么请留意一下本文参考资料1。</p>
+<p>首先说一下整体的思路，我们知道，动态加载的数据都是用户通过鼠标或键盘执行了一定的动作之后加载出来的。所以我们通过selenium提供的webdriver工具调用本地的浏览器，让程序替代人的行为，滚动页面，点击按钮，提交表单等等。从而获取到想要的数据。所以我认为，使用selenium方法爬取动态页面的<strong>中心思想</strong>是模拟人的行为。</p>
+<p>这里举一个例子，爬取自己QQ空间的说说。</p>
+<a id="more"></a>
+<h2 id="说说"><a href="#说说" class="headerlink" title="说说"></a>说说</h2><p>在模拟人的行为的中心思想指导下，我们首先来一步一步的分析出，人都需要做什么。这个过程中不放代码了，代码最后贴出来，注释也很详细，不想看分析的直接看代码也OK。</p>
+<p>百度qq空间，进入qq空间的登陆页面，发现默认是快速登陆方式，所以得先点击账号密码登陆，检查元素，发现这个按钮有id，好办。得出<strong>第一步：点击账号密码登陆。</strong></p>
+<p><img src="http://img.blog.csdn.net/20161229101500582?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="图一"></p>
+<p>点过之后，该填写表单了，填完之后点击登陆按钮，这里的帐号密码框和登陆按钮通过检查元素也可以发现都是有id的，获取很方便。<strong>第二步：填写表单并点击登陆按钮。</strong></p>
+<p>登陆成功后就进入了最近消息的页面，然后找到说说按钮，点进去（你的空间主题可能跟我不一样，不过点进去的url除了qq号部分不同，其它地方应该是相同的）。</p>
+<p><img src="http://img.blog.csdn.net/20161229102623479?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="图二"></p>
+<p>可以看到说说页的url格式是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://user.qq.com/qq号/311</span><br></pre></td></tr></table></figure>
+<p><strong>第三步：找到说说所在的url</strong></p>
+<p><img src="http://img.blog.csdn.net/20161229102641792?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="图三"></p>
+<p>然后我们就下拉滚动条，可以直观的看到说说是动态加载的，大概加载个四五次，就出现了分页的按钮。而且检查元素后发现十分感人，“下一页”按钮也有id。</p>
+<p>不过<strong>注意</strong>了，经过我的分析，这个id会随着你的点击次数逐次加一，不妨试一下，下两张图是没点过和点过一次的id。</p>
+<p><img src="http://img.blog.csdn.net/20161229103032590?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="图四"></p>
+<p><img src="http://img.blog.csdn.net/20161229103807906?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="图五"></p>
+<p>得出<strong>第四步：拖到页面末尾，点击“下一页”。</strong></p>
+<p>当页面到达最后一页，”下一页”按钮的id就消失了，也就是说程序里就查不到这个元素了，所以停止就好了。</p>
+<p><img src="http://img.blog.csdn.net/20161229104248581?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzAyNDI2MDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="图六"></p>
+<p><strong>第五步：重复第四步，直到“下一页”按钮不可点</strong></p>
+<p>根据以上得出的五步，再结合一下selenium的简单语法，就能实现获取动态加载的说说的功能。从下面的代码里可以看出，程序的流程就是再模拟我们上面分析的五步。</p>
+<h2 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h2><p>几点说明：</p>
+<ul>
+<li>注意注释中解释的frame的选择问题</li>
+<li>注意注释中登陆处的手动处理</li>
+<li>因为QQ空间里的id实在太好用了，我都是用的通过id查找，元素，其实selenium还可以用其它的方式，比如xpath，css等等</li>
+<li>unittest模块是python的一个内置测试模块，详情参考下面的资料5</li>
+<li>目前我只实现了孤零零的爬说说（而且还没爬回复），如果你实现了爬别人的说说或者自动留言，自动评论等有趣的功能（有空我会搞搞这些），欢迎pull request</li>
+<li>github地址<a href="https://github.com/kongtianyi/QQZoneSpider" target="_blank" rel="noopener">kongtianyi/QQZoneSpider</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">#coding:utf-8</span><br><span class="line"></span><br><span class="line">import unittest</span><br><span class="line">import time</span><br><span class="line">from selenium import webdriver</span><br><span class="line">from bs4 import BeautifulSoup</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class seleniumTest(unittest.TestCase):</span><br><span class="line">    user = &apos;xxxxxxxx&apos;  # 你的QQ号</span><br><span class="line">    pw = &apos;xxxxxx&apos;  # 你的QQ密码</span><br><span class="line"></span><br><span class="line">    def setUp(self):</span><br><span class="line">        # 调试的时候用firefox比较直观</span><br><span class="line">        # self.driver = webdriver.PhantomJS()</span><br><span class="line">        self.driver = webdriver.Firefox()</span><br><span class="line"></span><br><span class="line">    def testEle(self):</span><br><span class="line">        driver = self.driver</span><br><span class="line">        # 浏览器窗口最大化</span><br><span class="line">        driver.maximize_window()</span><br><span class="line">        # 浏览器地址定向为qq登陆页面</span><br><span class="line">        driver.get(&quot;http://i.qq.com&quot;)</span><br><span class="line">        # 很多时候网页由多个&lt;frame&gt;或&lt;iframe&gt;组成，webdriver默认定位的是最外层的frame，</span><br><span class="line">        # 所以这里需要选中一下frame，否则找不到下面需要的网页元素</span><br><span class="line">        driver.switch_to.frame(&quot;login_frame&quot;)</span><br><span class="line">        # 自动点击账号登陆方式</span><br><span class="line">        driver.find_element_by_id(&quot;switcher_plogin&quot;).click()</span><br><span class="line">        # 账号输入框输入已知qq账号</span><br><span class="line">        driver.find_element_by_id(&quot;u&quot;).send_keys(self.user)</span><br><span class="line">        # 密码框输入已知密码</span><br><span class="line">        driver.find_element_by_id(&quot;p&quot;).send_keys(self.pw)</span><br><span class="line">        # 自动点击登陆按钮</span><br><span class="line">        driver.find_element_by_id(&quot;login_button&quot;).click()</span><br><span class="line"></span><br><span class="line">        # 如果登录比较频繁或者服务器繁忙的时候，一次模拟点击可能失败，所以想到可以尝试多次，</span><br><span class="line">        # 但是像QQ空间这种比较知名的社区在多次登录后都会出现验证码，验证码自动处理又是一个</span><br><span class="line">        # 大问题，本例不赘述。本例采用手动确认的方式。即如果观察到自动登陆失败，手动登录后</span><br><span class="line">        # 再执行下列操作。</span><br><span class="line">        r = &apos;&apos;</span><br><span class="line">        while r != &apos;y&apos;:</span><br><span class="line">            print &quot;Login seccessful?[y]&quot;</span><br><span class="line">            r = raw_input()</span><br><span class="line"></span><br><span class="line">        # 让webdriver操纵当前页</span><br><span class="line">        driver.switch_to.default_content()</span><br><span class="line">        # 跳到说说的url</span><br><span class="line">        driver.get(&quot;http://user.qzone.qq.com/&quot; + self.user + &quot;/311&quot;)</span><br><span class="line">        # 访问全部说说需要访问所有分页，需要获取本页数据后点击“下一页”按钮，经分析，“下一页”</span><br><span class="line">        # 按钮的id会随着点击的次数发生变化，规律就是每点一下加一，所以需要在程序中动态的构造</span><br><span class="line">        # 它的id。（或者不用id改用xpath）</span><br><span class="line">        next_num = 0  # 初始“下一页”的id</span><br><span class="line">        while True:</span><br><span class="line">            # 下拉滚动条，使浏览器加载出动态加载的内容，可能像这样要拉很多次，中间要适当的延时（跟网速也有关系）。</span><br><span class="line">            # 如果说说内容都很长，就增大下拉的长度。</span><br><span class="line">            driver.execute_script(&quot;window.scrollBy(0,10000)&quot;)</span><br><span class="line">            time.sleep(3)</span><br><span class="line">            driver.execute_script(&quot;window.scrollBy(0,20000)&quot;)</span><br><span class="line">            time.sleep(3)</span><br><span class="line">            driver.execute_script(&quot;window.scrollBy(0,30000)&quot;)</span><br><span class="line">            time.sleep(3)</span><br><span class="line">            driver.execute_script(&quot;window.scrollBy(0,40000)&quot;)</span><br><span class="line">            time.sleep(5)</span><br><span class="line">            # 很多时候网页由多个&lt;frame&gt;或&lt;iframe&gt;组成，webdriver默认定位的是最外层的frame，</span><br><span class="line">            # 所以这里需要选中一下说说所在的frame，否则找不到下面需要的网页元素</span><br><span class="line">            driver.switch_to.frame(&quot;app_canvas_frame&quot;)</span><br><span class="line">            soup = BeautifulSoup(driver.page_source, &apos;xml&apos;)</span><br><span class="line">            contents = soup.find_all(&apos;pre&apos;, &#123;&apos;class&apos;: &apos;content&apos;&#125;)  # 内容</span><br><span class="line">            times = soup.find_all(&apos;a&apos;, &#123;&apos;class&apos;: &apos;c_tx c_tx3 goDetail&apos;&#125;)  # 发表时间</span><br><span class="line">            for content, _time in zip(contents, times):  # 这里_time的下划线是为了与time模块区分开</span><br><span class="line">                print content.get_text(), _time.get_text()</span><br><span class="line">            # 当已经到了尾页，“下一页”这个按钮就没有id了，可以结束了</span><br><span class="line">            if driver.page_source.find(&apos;pager_next_&apos; + str(next_num)) == -1:</span><br><span class="line">                break</span><br><span class="line">            # 找到“下一页”的按钮</span><br><span class="line">            elem = driver.find_element_by_id(&apos;pager_next_&apos; + str(next_num))</span><br><span class="line">            # 点击“下一页”</span><br><span class="line">            elem.click()</span><br><span class="line">            # 下一次的“下一页”的id</span><br><span class="line">            next_num += 1</span><br><span class="line">            # 因为在下一个循环里首先还要把页面下拉，所以要跳到外层的frame上</span><br><span class="line">            driver.switch_to.parent_frame()</span><br><span class="line"></span><br><span class="line">    def tearDown(self):</span><br><span class="line">        print &apos;down&apos;</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    unittest.main()</span><br></pre></td></tr></table></figure>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>在测试的时候使用selenium+Firefox，在写好了代码实际运行的时候不妨换成selenium+PhantomJS，后者是一个无界面的浏览器，效率会高些。</p>
+<p>本人于selenium初窥门径，如有不正确或不清晰之处，请各位大侠不吝批评指正！</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://www.zhihu.com/question/49568096" target="_blank" rel="noopener">知乎：selenium调用firefox失败的问题</a></li>
+<li><a href="http://blog.csdn.net/qq_23435721/article/details/50551314" target="_blank" rel="noopener">使用python+selenium完成qq空间自动登录小程序</a></li>
+<li><a href="http://blog.163.com/ly676830315@126/blog/static/1017337222013102310617946/" target="_blank" rel="noopener">selenium webdriver+python基本操作</a></li>
+<li><a href="http://www.jianshu.com/p/520749be7377" target="_blank" rel="noopener">python爬虫的最佳实践(五)–selenium+PhantomJS的简单使用</a></li>
+<li><a href="http://www.cnblogs.com/berlin-sun/p/UnitTestInPython.html?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="noopener">Python之自动单元测试之一（unittest使用实例）</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://kongtianyi.github.io/2016/12/29/python/Python-spider-dy-2/" data-id="cktsycnx5003dugufitenl88r" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/14/python/zerorpc-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+           zerorpc-python官方入门
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/21/python/Python-spider-dy-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Python爬虫爬取动态页面思路+实例（一）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lisence/">Lisence</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/commen/">commen</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分享/">分享</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲情偶记/">闲情偶记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JOJO/">JOJO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lisence/">Lisence</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-zerorpc/">Python zerorpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commen/">commen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/next/">next</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qsort/">qsort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分享/">分享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大型/">大型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据分析/">数据分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/诗/">诗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/闲情偶记/">闲情偶记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合框架/">集合框架</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Hadoop/" style="font-size: 11.67px;">Hadoop</a> <a href="/tags/JAVA/" style="font-size: 11.67px;">JAVA</a> <a href="/tags/JOJO/" style="font-size: 10px;">JOJO</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Lisence/" style="font-size: 10px;">Lisence</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-zerorpc/" style="font-size: 10px;">Python zerorpc</a> <a href="/tags/Scrapy/" style="font-size: 18.33px;">Scrapy</a> <a href="/tags/Ubuntu/" style="font-size: 11.67px;">Ubuntu</a> <a href="/tags/commen/" style="font-size: 10px;">commen</a> <a href="/tags/hash/" style="font-size: 11.67px;">hash</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/html/" style="font-size: 11.67px;">html</a> <a href="/tags/js/" style="font-size: 13.33px;">js</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/next/" style="font-size: 11.67px;">next</a> <a href="/tags/qsort/" style="font-size: 10px;">qsort</a> <a href="/tags/分享/" style="font-size: 10px;">分享</a> <a href="/tags/大型/" style="font-size: 10px;">大型</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/诗/" style="font-size: 15px;">诗</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/闲情偶记/" style="font-size: 16.67px;">闲情偶记</a> <a href="/tags/集合框架/" style="font-size: 10px;">集合框架</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/21/prose/about-love/">关于爱的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/18/prose/zlw-marry/">从领袖结婚说开去</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/12/share/jojo-lines/">JOJO名场面台词分享</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/26/peom/siroi-peom/">白色的世界</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/python/BloomFilterRedis/">基于Redis的布隆过滤器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 孔天逸<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

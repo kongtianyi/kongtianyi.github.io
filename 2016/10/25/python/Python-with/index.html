@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>@contextmanager-Python实现with结构的好方法 | 孔天逸&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="常见with结构常见的with结构是在进行文件操作时，比如 12345678# 中规中矩的写法f = open(&quot;test.txt&quot;, &quot;w&quot;)f.write(&quot;hello world!&quot;)f.close()# 采用with结构with open(&quot;test.txt&quot;, &quot;w&quot;) as f:  f.write(&quot;hello world!&quot;) 这个结构的好处，一个是简洁，一个是当我们对文件操作的逻辑">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@contextmanager-Python实现with结构的好方法">
+<meta property="og:url" content="http://kongtianyi.github.io/2016/10/25/python/Python-with/index.html">
+<meta property="og:site_name" content="孔天逸&#39;Blog">
+<meta property="og:description" content="常见with结构常见的with结构是在进行文件操作时，比如 12345678# 中规中矩的写法f = open(&quot;test.txt&quot;, &quot;w&quot;)f.write(&quot;hello world!&quot;)f.close()# 采用with结构with open(&quot;test.txt&quot;, &quot;w&quot;) as f:  f.write(&quot;hello world!&quot;) 这个结构的好处，一个是简洁，一个是当我们对文件操作的逻辑">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-10-25T13:30:52.177Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@contextmanager-Python实现with结构的好方法">
+<meta name="twitter:description" content="常见with结构常见的with结构是在进行文件操作时，比如 12345678# 中规中矩的写法f = open(&quot;test.txt&quot;, &quot;w&quot;)f.write(&quot;hello world!&quot;)f.close()# 采用with结构with open(&quot;test.txt&quot;, &quot;w&quot;) as f:  f.write(&quot;hello world!&quot;) 这个结构的好处，一个是简洁，一个是当我们对文件操作的逻辑">
+  
+    <link rel="alternate" href="/atom.xml" title="孔天逸&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孔天逸&#39;Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">人間って、不自由な生き物ね。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://kongtianyi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/Python-with" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/25/python/Python-with/" class="article-date">
+  <time datetime="2016-10-25T13:24:33.000Z" itemprop="datePublished">2016-10-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      @contextmanager-Python实现with结构的好方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="常见with结构"><a href="#常见with结构" class="headerlink" title="常见with结构"></a>常见with结构</h1><p>常见的with结构是在进行文件操作时，比如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 中规中矩的写法</span></span><br><span class="line">f = open(<span class="string">"test.txt"</span>, <span class="string">"w"</span>)</span><br><span class="line">f.write(<span class="string">"hello world!"</span>)</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 采用with结构</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"test.txt"</span>, <span class="string">"w"</span>) <span class="keyword">as</span> f:</span><br><span class="line">  f.write(<span class="string">"hello world!"</span>)</span><br></pre></td></tr></table></figure>
+<p>这个结构的好处，一个是简洁，一个是当我们对文件操作的逻辑很长的时候，不会因为忘了关闭文件而造成不必要的错误。类似的，当我们在某些时候不希望遗忘一些重要的语句的时候，可以自己封装个with结构，比如关闭数据库链接等情况。</p>
+<h1 id="一般实现方法"><a href="#一般实现方法" class="headerlink" title="一般实现方法"></a>一般实现方法</h1><p>with结构一般的实现方法是在定义类的时候重载<code>__enter__</code>方法和<code>__exit__</code>方法，比如我们可以通过如下代码来模拟一下上面两段代码前者到后者的转化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">myOpen</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, state)</span>:</span></span><br><span class="line">        self.f = open(name, state)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回值是with...as...中as出来的东西，如下面的f</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.f</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 在with...as...语句块自动执行完之后执行</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, exc_type, exc_val, exc_tb)</span>:</span></span><br><span class="line">        self.f.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">with</span> myOpen(<span class="string">"test.txt"</span>, <span class="string">"w"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(<span class="string">"hello world!"</span>)</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"><span class="comment"># @contextmanager方法</span></span><br><span class="line"></span><br><span class="line">好像上面这种方法实现起来<span class="keyword">with</span>结构有那么一点点麻烦，那么就进入主题吧，有一种逼格又高，又简便的方法，先上代码，仍以打开文件为例：</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"></span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myOpen</span><span class="params">(name, state)</span>:</span></span><br><span class="line">  <span class="keyword">try</span>:</span><br><span class="line">    f = open(name, state)</span><br><span class="line">    <span class="keyword">yield</span> f</span><br><span class="line">  <span class="keyword">finally</span>:</span><br><span class="line">      f.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">  <span class="keyword">with</span> myOpen(<span class="string">"test.txt"</span>, <span class="string">"w"</span>) <span class="keyword">as</span> f:</span><br><span class="line">      f.write(<span class="string">"hello world!"</span>)</span><br></pre></td></tr></table></figure>
+<p>可以看出这里只要定义一个函数，然后在它的头部加上@contextmanager就好了，这个函数应该怎么定义呢？我们去源码里看一下就好，里面给出了详细的注释<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">contextmanager</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="string">"""@contextmanager decorator.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Typical usage:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        @contextmanager</span></span><br><span class="line"><span class="string">        def some_generator(&lt;arguments&gt;):</span></span><br><span class="line"><span class="string">            &lt;setup&gt;</span></span><br><span class="line"><span class="string">            try:</span></span><br><span class="line"><span class="string">                yield &lt;value&gt;</span></span><br><span class="line"><span class="string">            finally:</span></span><br><span class="line"><span class="string">                &lt;cleanup&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This makes this:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        with some_generator(&lt;arguments&gt;) as &lt;variable&gt;:</span></span><br><span class="line"><span class="string">            &lt;body&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    equivalent to this:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &lt;setup&gt;</span></span><br><span class="line"><span class="string">        try:</span></span><br><span class="line"><span class="string">            &lt;variable&gt; = &lt;value&gt;</span></span><br><span class="line"><span class="string">            &lt;body&gt;</span></span><br><span class="line"><span class="string">        finally:</span></span><br><span class="line"><span class="string">            &lt;cleanup&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">helper</span><span class="params">(*args, **kwds)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> GeneratorContextManager(func(*args, **kwds))</span><br><span class="line">    <span class="keyword">return</span> helper</span><br></pre></td></tr></table></figure></p>
+<p>通过注释我们可以看到，我们可以通过给一个try…finally…结构的函数头部加上@contextmanager就可以通过with…as…结构来调用它了，这样try块中yield的数据被as出来，finally块中的数据在with..as..块结束的时候被执行。</p>
+<p>这样写出来的代码是不是感觉很nice？</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://kongtianyi.github.io/2016/10/25/python/Python-with/" data-id="cktsycnx7003iuguf242usuat" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/01/Node.js/Node.js-freeproxy/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          用Node.js爬取免费代理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/15/python/Scrapy-Lesson-5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Scrapy定向爬虫教程(五)——保持登陆状态</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lisence/">Lisence</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/commen/">commen</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分享/">分享</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲情偶记/">闲情偶记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JOJO/">JOJO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lisence/">Lisence</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-zerorpc/">Python zerorpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commen/">commen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/next/">next</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qsort/">qsort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分享/">分享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大型/">大型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据分析/">数据分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/诗/">诗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/闲情偶记/">闲情偶记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合框架/">集合框架</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Hadoop/" style="font-size: 11.67px;">Hadoop</a> <a href="/tags/JAVA/" style="font-size: 11.67px;">JAVA</a> <a href="/tags/JOJO/" style="font-size: 10px;">JOJO</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Lisence/" style="font-size: 10px;">Lisence</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-zerorpc/" style="font-size: 10px;">Python zerorpc</a> <a href="/tags/Scrapy/" style="font-size: 18.33px;">Scrapy</a> <a href="/tags/Ubuntu/" style="font-size: 11.67px;">Ubuntu</a> <a href="/tags/commen/" style="font-size: 10px;">commen</a> <a href="/tags/hash/" style="font-size: 11.67px;">hash</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/html/" style="font-size: 11.67px;">html</a> <a href="/tags/js/" style="font-size: 13.33px;">js</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/next/" style="font-size: 11.67px;">next</a> <a href="/tags/qsort/" style="font-size: 10px;">qsort</a> <a href="/tags/分享/" style="font-size: 10px;">分享</a> <a href="/tags/大型/" style="font-size: 10px;">大型</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/诗/" style="font-size: 15px;">诗</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/闲情偶记/" style="font-size: 16.67px;">闲情偶记</a> <a href="/tags/集合框架/" style="font-size: 10px;">集合框架</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/21/prose/about-love/">关于爱的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/18/prose/zlw-marry/">从领袖结婚说开去</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/12/share/jojo-lines/">JOJO名场面台词分享</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/26/peom/siroi-peom/">白色的世界</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/python/BloomFilterRedis/">基于Redis的布隆过滤器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 孔天逸<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

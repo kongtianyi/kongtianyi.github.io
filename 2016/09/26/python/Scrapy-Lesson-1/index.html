@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Scrapy定向爬虫教程(一)——创建运行项目和基本介绍 | 孔天逸&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-1/ 前言目前网上的Scrapy中文教程比较少，而且大多教程使用的Scrapy版本较老，比如说这个Scrapy 0.25 文档，如其名，上古时期的翻译文档(后注：这个文档在不断更新，现在已更至1.0版本，喜欢阅读文档学习的朋友可以移步)；再比如极客学院的视频">
+<meta name="keywords" content="Scrapy,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scrapy定向爬虫教程(一)——创建运行项目和基本介绍">
+<meta property="og:url" content="http://kongtianyi.github.io/2016/09/26/python/Scrapy-Lesson-1/index.html">
+<meta property="og:site_name" content="孔天逸&#39;Blog">
+<meta property="og:description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-1/ 前言目前网上的Scrapy中文教程比较少，而且大多教程使用的Scrapy版本较老，比如说这个Scrapy 0.25 文档，如其名，上古时期的翻译文档(后注：这个文档在不断更新，现在已更至1.0版本，喜欢阅读文档学习的朋友可以移步)；再比如极客学院的视频">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-1.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-2.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-3.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-4.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-5.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-6.png">
+<meta property="og:updated_time" content="2016-12-08T10:36:40.331Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scrapy定向爬虫教程(一)——创建运行项目和基本介绍">
+<meta name="twitter:description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-1/ 前言目前网上的Scrapy中文教程比较少，而且大多教程使用的Scrapy版本较老，比如说这个Scrapy 0.25 文档，如其名，上古时期的翻译文档(后注：这个文档在不断更新，现在已更至1.0版本，喜欢阅读文档学习的朋友可以移步)；再比如极客学院的视频">
+<meta name="twitter:image" content="http://kongtianyi.github.io/image/spider/scrapy-1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="孔天逸&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孔天逸&#39;Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">人間って、不自由な生き物ね。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://kongtianyi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/Scrapy-Lesson-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/26/python/Scrapy-Lesson-1/" class="article-date">
+  <time datetime="2016-09-26T04:03:14.000Z" itemprop="datePublished">2016-09-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Scrapy定向爬虫教程(一)——创建运行项目和基本介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>本教程为原创教程，转载请注明出处<a href="http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-1/" target="_blank" rel="noopener">http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-1/</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目前网上的Scrapy中文教程比较少，而且大多教程使用的Scrapy版本较老，比如说这个<a href="http://scrapy-chs.readthedocs.io/zh_CN/latest/index.html" target="_blank" rel="noopener">Scrapy 0.25 文档</a>，如其名，上古时期的翻译文档(后注：这个文档在不断更新，现在已更至1.0版本，喜欢阅读文档学习的朋友可以移步)；再比如<a href="http://www.jikexueyuan.com/course/1287.html" target="_blank" rel="noopener">极客学院的视频教程</a>使用的是1.0.x版本，跟新版相比还是有出入(后注：当然喜欢视频的朋友可以移步)。这种情况使得新手入门Scrapy较为困难，而且各种掉坑。本人也是只刚入门的菜鸟，我希望能用菜鸟的语言给其他想要踏进Scrapy大门的小菜鸟指引一条道路。至少比我踩得坑少点吧^-^。</p>
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ul>
+<li>Ubuntu 16.04 </li>
+<li>Python 2.7.12</li>
+<li>Scrapy  1.1.2(后注:因版本更新较快，我会把所知的新改动在教程中更新)</li>
+<li>PyCharm 2016.1.4</li>
+</ul>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本教程将带领大家写一个爬取Discuz模板论坛网站的定向爬虫，网上的Discuz论坛数不胜数，当然我也不敢公开在这教唆大家去侵犯某一个，只好祭出自己搭的论坛来供大家练习——<a href="http://www.heartsong.top/forum.php" target="_blank" rel="noopener">心韵论坛</a>。当然，既然是Discuz模板，用哪个网站做教程都是大同小异的。有了思路后，其他网站也会触类旁通。本教程分为以下八个部分，将分为八篇博文向大家介绍：</p>
+<ul>
+<li>Scrapy安装与项目创建</li>
+<li>通过Selector选择器解析页面获取内容</li>
+<li>爬取多个页面</li>
+<li>数据存入MongoDB</li>
+<li>保持登陆状态</li>
+<li>分析表单并回帖</li>
+<li>使用UA/代理中间件(因课业繁忙，未更新，可催)</li>
+<li>结束邮件通知(因课业繁忙，未更新，可催)</li>
+</ul>
+<a id="more"></a>
+<p>好，废话不多说，我们进入第一部分。</p>
+<h2 id="Scrapy安装"><a href="#Scrapy安装" class="headerlink" title="Scrapy安装"></a>Scrapy安装</h2><p>既然选择了Scrapy，那么使用Linux对你来说也是家常便饭了吧，安装教程请戳链接<a href="http://kongtianyi.cn/2016/08/25/python/Ubuntu16.04%E5%AE%89%E8%A3%85Scrapy%E5%91%BD%E4%BB%A4/" target="_blank" rel="noopener">Ubuntu16.04安装Scrapy命令</a></p>
+<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>首先进入你想创建项目的目录，我为了方便，就直接在home目录下建项目了，因为我们要爬取的网站域名是heartsong.top，为了方便识别，我们把项目的名字起做heartsong，在命令行中输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy startproject heartsong</span><br></pre></td></tr></table></figure></p>
+<p>输出信息如图，表示项目创建成功<br><img src="../../../../../image/spider/scrapy-1.png" alt="图一"></p>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>我们通过PyCharm打开项目<br><img src="../../../../../image/spider/scrapy-2.png" alt="图二"><br>发现默认生成的项目有如下结构<br><img src="../../../../../image/spider/scrapy-3.png" alt="图三"><br>我们发现，默认生成的项目有下列几个文件</p>
+<ul>
+<li><code>__init__.py</code> × 2</li>
+<li><code>items.py</code></li>
+<li><code>pipelines.py</code></li>
+<li><code>settings.py</code></li>
+<li><code>scrapy.cfg</code></li>
+</ul>
+<p>在这几个文件中，两个<code>__init__.py</code>和<code>scrapy.cfg</code>是用不到的，不多说。下面，我们来介绍一下我们在今后用的到的文件的基本用途</p>
+<h3 id="items-py"><a href="#items-py" class="headerlink" title="items.py"></a>items.py</h3><p>双击打开这个文件,看一下都初始化了什么东西<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: urf-8 -*-</span></span><br><span class="line"><span class="comment"># Define here the models for your scrapyed items</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># See documentation in</span></span><br><span class="line"><span class="comment"># http://doc.scrapy.org/en/latest/topics/items.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeartsongItem</span><span class="params">(scrapy.Item)</span>:</span></span><br><span class="line">    <span class="comment"># define the fields for your item here like:</span></span><br><span class="line">    <span class="comment"># </span></span><br><span class="line">    <span class="comment"># name = scrapy.Filed()</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<p>通过里面的注释可见，这个文件的作用是定义我们要爬取信息的标准格式，打个比方说，如果我们要爬取一批人的个人信息，包括姓名，性别，生日，那么我们可以这样来书写这个文件<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeartsongItem</span><span class="params">(scrapy.Item)</span>:</span></span><br><span class="line">   name = scrapy.Filed()</span><br><span class="line">   sex = scrapy.Filed()</span><br><span class="line">   birthday = scrapy.Filed()</span><br></pre></td></tr></table></figure></p>
+<p>易见本文件只是定义了一个类，至于什么时候实例化它，怎么保存它，请继续了解下面的内容。</p>
+<h3 id="settings-py"><a href="#settings-py" class="headerlink" title="settings.py"></a>settings.py</h3><p>如其名，这是本项目的配置文件，里面注释着很多常用的配置项，我们通过在其他文件中引入本文件的方式来使用这些配置项。<br>当然，我们可以把这些注释都删掉，等需要开启哪个功能的时候再另行编辑。<br>我们此处先看看默认打开的配置项吧<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BOT_NAME = <span class="string">'heartsong'</span></span><br><span class="line">SPIDER_MODULES = [<span class="string">'heartsong.spiders'</span>]</span><br><span class="line">NEWSPIDER_MODULE = <span class="string">'heartsong.spider'</span></span><br><span class="line"><span class="comment"># Obey robots.txt rules</span></span><br><span class="line">ROBORSTXT_OBEY = <span class="keyword">True</span></span><br></pre></td></tr></table></figure></p>
+<p>因为我们写的是定向爬虫，前面三个按默认即可，我们不去管他。看第四项，注释里说这个配置项的意思是是否遵守<code>robots.txt</code>，那么<code>robots.txt</code>是个什么东西呢？<br>通俗来说，<code>robots.txt</code>是遵循<a href="http://baike.baidu.com/link?url=Ongd4Fsnm-SSbXafd3CfaGYG_GSw4J61Ygs2u0EATrIeRlWKMGdRxccMQcN_u8dv-eymHP7P7XKZ5OkIq8sasn4louQBSCcK7XBAXe6j_L4zNxzCqOnolvZLENEA3NBc" target="_blank" rel="noopener">Robot协议</a>的一个文件，它保存在网站的服务器中，它的作用是，告诉搜索引擎爬虫，本网站哪些目录下的网页<strong>不希望</strong>你进行爬取收录。在Scrapy启动后，会在第一时间访问网站的<code>robots.txt</code>文件，然后决定该网站的爬取范围。<br>当然，我们并不是在做搜索引擎，而且在某些情况下我们想要获取的内容恰恰是被<code>robots.txt</code>所禁止访问的。所以，我们就将此配置项设置为<code>False</code>，拒绝遵守<a href="http://baike.baidu.com/link?url=Ongd4Fsnm-SSbXafd3CfaGYG_GSw4J61Ygs2u0EATrIeRlWKMGdRxccMQcN_u8dv-eymHP7P7XKZ5OkIq8sasn4louQBSCcK7XBAXe6j_L4zNxzCqOnolvZLENEA3NBc" target="_blank" rel="noopener">Robot协议</a>！</p>
+<h3 id="pipelines-py"><a href="#pipelines-py" class="headerlink" title="pipelines.py"></a>pipelines.py</h3><p>双击打开这个文件，看看都初始化了什么东西<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define your item pipelines here</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># Don't forget to add your pipeline to the ITEM_PIPELINES setting</span></span><br><span class="line"><span class="comment"># See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeartsongPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure></p>
+<p>从注释中所能得到的信息微乎其微，只告诉我们要启用此文件的话必须要在<code>settings.py</code>里配置一下<code>ITEM_PIPELINES</code>，好，那我们就老老实实的去<code>settings.py</code>里配置一下吧，不过注意，<strong>此处有坑</strong>，在1.0.x版本(极客学院教程中使用)，配置项用list格式来书写，而在最新的1.1.2版本中，需要用dict格式，否则会报错，无法爬取，配置好后，我们的<code>setting.py</code>如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">BOT_NAME = &apos;heartsong&apos;</span><br><span class="line">SPIDER_MODULES = [&apos;heartsong.spiders&apos;]</span><br><span class="line">NEWSPIDER_MODULE = &apos;heartsong.spider&apos;</span><br><span class="line"></span><br><span class="line">ROBORSTXT_OBEY = True</span><br><span class="line"></span><br><span class="line">ITEM_PIPELINES = &#123;</span><br><span class="line">    &apos;heartsong.pipelines.HeartsongPipeline&apos;: 300,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此处的300表示优先级，因为本项目只用到这一个pipeline，所以随意取0-1000中的一个数值即可。<br>好，镜头切回<code>pipelines.py</code>,这个文件到底有什么用呢？当然用处很多啦，本教程中介绍的作用只有两个：</p>
+<ul>
+<li>对爬取到的数据(Item)进行处理，比如存入数据库</li>
+<li>爬虫结束时产生事件，比如发送一封邮件</li>
+</ul>
+<p>此处只是介绍一下，具体的操作要看后续教程。</p>
+<h2 id="爬虫呢？"><a href="#爬虫呢？" class="headerlink" title="爬虫呢？"></a>爬虫呢？</h2><p>默认生成的项目结构至此我们已经介绍完了，可是我们是来做爬虫的吧，爬虫呢？莫急莫急，互联网上的网站数不胜数，变化多端，我们的爬虫当然不可能一成不变，所以爬虫文件我们需要自己定义。</p>
+<h2 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h2><p>在默认生成的<code>spiders</code>目录下新建<code>heartsong_spider.py</code>,我们的爬虫就写在这里面，因为是介绍，那么此处就写个简单的下载网站的主页，让大家能运行一下，感受一下scrapy。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeartsongSpider</span><span class="params">(scrapy.spiders.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">"heartsong"</span>  <span class="comment"># 爬虫的名字，执行时使用</span></span><br><span class="line">    allowed_domains = [<span class="string">"heartsong.top"</span>]  <span class="comment"># 允许爬取的域名，非此域名的网页不会爬取</span></span><br><span class="line">    start_urls = [</span><br><span class="line">        <span class="string">"http://www.heartsong.top"</span>  <span class="comment"># 起始url，此例只爬这一个页面   </span></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span>  <span class="comment"># 真正的爬虫方法</span></span><br><span class="line">        html = response.body  <span class="comment"># response是获取到的来自网站的返回</span></span><br><span class="line">        <span class="comment"># 以下四行将html存入文件</span></span><br><span class="line">        filename = <span class="string">"index.html"</span></span><br><span class="line">        file = open(filename, <span class="string">"w"</span>)</span><br><span class="line">        file.write(html)</span><br><span class="line">        file.close()</span><br></pre></td></tr></table></figure></p>
+<p>要说明的是，这个类不是随心所欲来写的，<code>name</code>,<code>allowed_domains</code>,<code>start_urls</code>,都是类似于”重载”的值。也就是说，scrapy内部会检测这些变量的值，变量名不可以起成其它的名字，类似的变量之后还会有介绍。至于<code>parse</code>方法，就是重载的父类的方法，我们爬虫的主体一般就写在这里面。<br>好，现在让我们来运行它<br>在命令行中进入heartsong目录下，执行命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy crawl heartsong</span><br></pre></td></tr></table></figure></p>
+<p>此处的名字heartsong是与爬虫类中的<code>name</code>保持一致。<br><img src="../../../../../image/spider/scrapy-4.png" alt="图四"><br>输出的信息还是比较多的，我就不截完了。<br>来到heartsong目录下看看有没有下载成功<br><img src="../../../../../image/spider/scrapy-5.png" alt="图五"><br>双击点开看看<br><img src="../../../../../image/spider/scrapy-6.png" alt="图六"><br>发现很OK。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本部分介绍了Scrapy的下载，创建项目，基本文件，运行程序这一部分入门知识，在下一个部分中，我们将学习如何使用Selector选择器在网页中提取我们想要的内容。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://kongtianyi.github.io/2016/09/26/python/Scrapy-Lesson-1/" data-id="cktsycnxf0041ugufkd6p9w1k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Scrapy/">Scrapy</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/27/python/Scrapy-Lesson-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Scrapy定向爬虫教程(二)——提取网页内容
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/24/js/JavaScript闭包/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript闭包</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lisence/">Lisence</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/commen/">commen</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分享/">分享</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲情偶记/">闲情偶记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JOJO/">JOJO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lisence/">Lisence</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-zerorpc/">Python zerorpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commen/">commen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/next/">next</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qsort/">qsort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分享/">分享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大型/">大型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据分析/">数据分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/诗/">诗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/闲情偶记/">闲情偶记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合框架/">集合框架</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Hadoop/" style="font-size: 11.67px;">Hadoop</a> <a href="/tags/JAVA/" style="font-size: 11.67px;">JAVA</a> <a href="/tags/JOJO/" style="font-size: 10px;">JOJO</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Lisence/" style="font-size: 10px;">Lisence</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-zerorpc/" style="font-size: 10px;">Python zerorpc</a> <a href="/tags/Scrapy/" style="font-size: 18.33px;">Scrapy</a> <a href="/tags/Ubuntu/" style="font-size: 11.67px;">Ubuntu</a> <a href="/tags/commen/" style="font-size: 10px;">commen</a> <a href="/tags/hash/" style="font-size: 11.67px;">hash</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/html/" style="font-size: 11.67px;">html</a> <a href="/tags/js/" style="font-size: 13.33px;">js</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/next/" style="font-size: 11.67px;">next</a> <a href="/tags/qsort/" style="font-size: 10px;">qsort</a> <a href="/tags/分享/" style="font-size: 10px;">分享</a> <a href="/tags/大型/" style="font-size: 10px;">大型</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/诗/" style="font-size: 15px;">诗</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/闲情偶记/" style="font-size: 16.67px;">闲情偶记</a> <a href="/tags/集合框架/" style="font-size: 10px;">集合框架</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/21/prose/about-love/">关于爱的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/18/prose/zlw-marry/">从领袖结婚说开去</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/12/share/jojo-lines/">JOJO名场面台词分享</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/26/peom/siroi-peom/">白色的世界</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/python/BloomFilterRedis/">基于Redis的布隆过滤器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 孔天逸<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>JAVA窗体程序调用静态资源 | 孔天逸&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简介介绍JAVA窗体程序调用图片、音频、字体三种静态资源的代码。使用这种方法调用静态资源，可以直接把静态资源打包到JAR包里。 在音频调用中，可能会由于Eclipse的原因报错，解决办法参见有关import sun.audio.AudioPlayer(或者其它文件)的问题">
+<meta name="keywords" content="JAVA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA窗体程序调用静态资源">
+<meta property="og:url" content="http://kongtianyi.github.io/2016/11/01/java/JAVA-Static-Resource/index.html">
+<meta property="og:site_name" content="孔天逸&#39;Blog">
+<meta property="og:description" content="简介介绍JAVA窗体程序调用图片、音频、字体三种静态资源的代码。使用这种方法调用静态资源，可以直接把静态资源打包到JAR包里。 在音频调用中，可能会由于Eclipse的原因报错，解决办法参见有关import sun.audio.AudioPlayer(或者其它文件)的问题">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20161101220030475">
+<meta property="og:updated_time" content="2016-11-01T14:20:28.408Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JAVA窗体程序调用静态资源">
+<meta name="twitter:description" content="简介介绍JAVA窗体程序调用图片、音频、字体三种静态资源的代码。使用这种方法调用静态资源，可以直接把静态资源打包到JAR包里。 在音频调用中，可能会由于Eclipse的原因报错，解决办法参见有关import sun.audio.AudioPlayer(或者其它文件)的问题">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20161101220030475">
+  
+    <link rel="alternate" href="/atom.xml" title="孔天逸&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孔天逸&#39;Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">人間って、不自由な生き物ね。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://kongtianyi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java/JAVA-Static-Resource" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/01/java/JAVA-Static-Resource/" class="article-date">
+  <time datetime="2016-11-01T14:20:31.000Z" itemprop="datePublished">2016-11-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JAVA窗体程序调用静态资源
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>介绍JAVA窗体程序调用图片、音频、字体三种静态资源的代码。使用这种方法调用静态资源，可以直接把静态资源打包到JAR包里。</p>
+<p>在音频调用中，可能会由于Eclipse的原因报错，解决办法参见<a href="http://www.cnblogs.com/Cratical/archive/2011/05/11/2043756.html" target="_blank" rel="noopener">有关import sun.audio.AudioPlayer(或者其它文件)的问题</a></p>
+<a id="more"></a>
+<h1 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h1><p>这是我封装的一个修改JFrame外观的类，在里面使用的就是接下来贴的方法。</p>
+<p>github地址：<a href="https://github.com/kongtianyi/changeView" target="_blank" rel="noopener">https://github.com/kongtianyi/changeView</a></p>
+<p>下载后用Eclipes打开运行即可。</p>
+<p>效果图(自行脑补BGM)：<br><img src="http://img.blog.csdn.net/20161101220030475" alt="这里写图片描述"></p>
+<h1 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h1><p>在一个类中（继承自JFrame的一个类）定义一下方法，很遗憾不能设置成静态方法跨类调用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 根据相对路径加载图片</span><br><span class="line"> * @param path: 图片的相对路径</span><br><span class="line"> * @return: 获取到的图片对象</span><br><span class="line"> */</span><br><span class="line">public Image getImagePath(String path) &#123;  </span><br><span class="line">	Image image=null;  </span><br><span class="line">    InputStream is = (InputStream) this.getClass().getClassLoader().getResourceAsStream(path);    try &#123;</span><br><span class="line">		image=ImageIO.read(is);</span><br><span class="line">	&#125; catch (IOException e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">    return image;  </span><br><span class="line">&#125; </span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">/**</span><br><span class="line"> * 根据相对路径加载音频</span><br><span class="line"> * @param path: 音频文件的相对路径</span><br><span class="line"> * @return: 获取到的音频对象</span><br><span class="line"> */</span><br><span class="line">public AudioStream getAudioPath(String resource)&#123;  </span><br><span class="line">    InputStream is = (InputStream) this.getClass().getClassLoader().getResourceAsStream(resource);     </span><br><span class="line">    AudioStream as = null;</span><br><span class="line">	try &#123;</span><br><span class="line">		as = new AudioStream(is);</span><br><span class="line">	&#125; catch (IOException e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">    return as;  </span><br><span class="line">&#125; </span><br><span class="line">	</span><br><span class="line">/**</span><br><span class="line"> * 根据相对路径加载字体</span><br><span class="line"> * @param path: 字体文件的相对路径</span><br><span class="line"> * @return: 获取到的字体对象</span><br><span class="line"> */</span><br><span class="line">public Font getDefinedFont(String path) &#123;  </span><br><span class="line">	if (definedFont == null) &#123;  </span><br><span class="line">        InputStream is = null;  </span><br><span class="line">        BufferedInputStream bis = null;  </span><br><span class="line">        try &#123;  </span><br><span class="line">	        is = (InputStream) this.getClass().getClassLoader().getResourceAsStream(path);            bis = new BufferedInputStream(is);  </span><br><span class="line">            definedFont = Font.createFont(Font.TRUETYPE_FONT, bis);  </span><br><span class="line">            definedFont = definedFont.deriveFont(25f);  </span><br><span class="line">            definedFont = definedFont.deriveFont(Font.BOLD);</span><br><span class="line">        &#125; catch (FontFormatException e) &#123;  </span><br><span class="line">            e.printStackTrace();  </span><br><span class="line">        &#125; catch (IOException e) &#123;  </span><br><span class="line">            e.printStackTrace();  </span><br><span class="line">        &#125; finally &#123;  </span><br><span class="line">            try &#123;  </span><br><span class="line">                 if (null != bis) &#123;  </span><br><span class="line">                    bis.close();  </span><br><span class="line">                 &#125;  </span><br><span class="line">                 if (null != is) &#123;  </span><br><span class="line">                    is.close();  </span><br><span class="line">                 &#125;  </span><br><span class="line">            &#125; catch (IOException e) &#123;  </span><br><span class="line">                e.printStackTrace();  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    return definedFont;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/*图片*/</span><br><span class="line">logo = getImagePath(&quot;resource/image/logo.png&quot;);</span><br><span class="line">logoIcon = new ImageIcon(logo);</span><br><span class="line">logoLabel = new JLabel(logoIcon);</span><br><span class="line"></span><br><span class="line">/*字体*/</span><br><span class="line">titel = new JLabel(name);</span><br><span class="line">titel.setFont(getDefinedFont(&quot;resource/font/叶根友毛笔特色简体.ttf&quot;));</span><br><span class="line"></span><br><span class="line">/*音乐*/</span><br><span class="line">backMusic = getAudioPath(&quot;resource/music/竹苑情歌.au&quot;);</span><br><span class="line">AudioPlayer.player.start(backMusic);  /*播放背景音乐*/</span><br></pre></td></tr></table></figure>
+<h1 id="关于txt"><a href="#关于txt" class="headerlink" title="关于txt"></a>关于txt</h1><p>如果仅仅是读取的话，可以考虑用上述方法打入到JAR包中，但是如果涉及到修改TXT文件的内容，就不能再打入到JAR里了，那么操作的方法就是，在源码中需要操作文件的地方直接写文件名，没有路径，然后把文件保存在JAR文件的同一目录下，就可以实现文件的操作了。当然，其它资源文件也可以用这种方法访问，但是在一些具体的情况下，还是将资源文件打入到JAR包会比较方便。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://kongtianyi.github.io/2016/11/01/java/JAVA-Static-Resource/" data-id="cktsycnw9001augufpdd8ob5h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JAVA/">JAVA</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/05/python/Scrapy-Lesson-6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Scrapy定向爬虫教程(六)——分析表单并回帖
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/01/Node.js/Node.js-freeproxy/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">用Node.js爬取免费代理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lisence/">Lisence</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/commen/">commen</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分享/">分享</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲情偶记/">闲情偶记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JOJO/">JOJO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lisence/">Lisence</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-zerorpc/">Python zerorpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commen/">commen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/next/">next</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qsort/">qsort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分享/">分享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大型/">大型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据分析/">数据分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/诗/">诗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/闲情偶记/">闲情偶记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合框架/">集合框架</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Hadoop/" style="font-size: 11.67px;">Hadoop</a> <a href="/tags/JAVA/" style="font-size: 11.67px;">JAVA</a> <a href="/tags/JOJO/" style="font-size: 10px;">JOJO</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Lisence/" style="font-size: 10px;">Lisence</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-zerorpc/" style="font-size: 10px;">Python zerorpc</a> <a href="/tags/Scrapy/" style="font-size: 18.33px;">Scrapy</a> <a href="/tags/Ubuntu/" style="font-size: 11.67px;">Ubuntu</a> <a href="/tags/commen/" style="font-size: 10px;">commen</a> <a href="/tags/hash/" style="font-size: 11.67px;">hash</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/html/" style="font-size: 11.67px;">html</a> <a href="/tags/js/" style="font-size: 13.33px;">js</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/next/" style="font-size: 11.67px;">next</a> <a href="/tags/qsort/" style="font-size: 10px;">qsort</a> <a href="/tags/分享/" style="font-size: 10px;">分享</a> <a href="/tags/大型/" style="font-size: 10px;">大型</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/诗/" style="font-size: 15px;">诗</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/闲情偶记/" style="font-size: 16.67px;">闲情偶记</a> <a href="/tags/集合框架/" style="font-size: 10px;">集合框架</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/21/prose/about-love/">关于爱的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/18/prose/zlw-marry/">从领袖结婚说开去</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/12/share/jojo-lines/">JOJO名场面台词分享</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/26/peom/siroi-peom/">白色的世界</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/python/BloomFilterRedis/">基于Redis的布隆过滤器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 孔天逸<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

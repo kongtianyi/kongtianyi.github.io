@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Scrapy定向爬虫教程(二)——提取网页内容 | 孔天逸&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-2/ 本节内容在这一小结，我将介绍如何使用Scrapy通过Selector选择器从网页中提取出我们想要的内容，并将这些内容存放到本地文件。我们的目标网页是http://www.heartsong.top/forum.php?mod=viewthread&amp;am">
+<meta name="keywords" content="Scrapy,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scrapy定向爬虫教程(二)——提取网页内容">
+<meta property="og:url" content="http://kongtianyi.github.io/2016/09/27/python/Scrapy-Lesson-2/index.html">
+<meta property="og:site_name" content="孔天逸&#39;Blog">
+<meta property="og:description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-2/ 本节内容在这一小结，我将介绍如何使用Scrapy通过Selector选择器从网页中提取出我们想要的内容，并将这些内容存放到本地文件。我们的目标网页是http://www.heartsong.top/forum.php?mod=viewthread&amp;am">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-10.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-11.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-12.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-7.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-8.png">
+<meta property="og:image" content="http://kongtianyi.github.io/image/spider/scrapy-9.png">
+<meta property="og:updated_time" content="2016-11-29T07:46:00.993Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scrapy定向爬虫教程(二)——提取网页内容">
+<meta name="twitter:description" content="声明本教程为原创教程，转载请注明出处http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-2/ 本节内容在这一小结，我将介绍如何使用Scrapy通过Selector选择器从网页中提取出我们想要的内容，并将这些内容存放到本地文件。我们的目标网页是http://www.heartsong.top/forum.php?mod=viewthread&amp;am">
+<meta name="twitter:image" content="http://kongtianyi.github.io/image/spider/scrapy-10.png">
+  
+    <link rel="alternate" href="/atom.xml" title="孔天逸&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">孔天逸&#39;Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">人間って、不自由な生き物ね。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://kongtianyi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/Scrapy-Lesson-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/27/python/Scrapy-Lesson-2/" class="article-date">
+  <time datetime="2016-09-27T07:46:18.000Z" itemprop="datePublished">2016-09-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Scrapy定向爬虫教程(二)——提取网页内容
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>本教程为原创教程，转载请注明出处<a href="http://kongtianyi.cn/2016/09/27/python/Scrapy-Lesson-2/" target="_blank" rel="noopener">http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-2/</a></p>
+<h2 id="本节内容"><a href="#本节内容" class="headerlink" title="本节内容"></a>本节内容</h2><p>在这一小结，我将介绍如何使用Scrapy通过Selector选择器从网页中提取出我们想要的内容，并将这些内容存放到本地文件。<br>我们的目标网页是<a href="http://www.heartsong.top/forum.php?mod=viewthread&amp;tid=8" target="_blank" rel="noopener">http://www.heartsong.top/forum.php?mod=viewthread&amp;tid=8</a>,一个有七层楼的帖子。我们要获取到每一层楼的下列信息：</p>
+<ul>
+<li>所属主题帖的标题</li>
+<li>所属主题帖的url</li>
+<li>这一楼层的作者</li>
+<li>这一楼层的发表时间</li>
+<li>这一楼层的内容</li>
+</ul>
+<a id="more"></a>
+<h2 id="Selector选择器"><a href="#Selector选择器" class="headerlink" title="Selector选择器"></a>Selector选择器</h2><p>在Scrapy中，也可以使用BeautifulSoup来解析网页，但是，我们推荐使用Scrapy自带的Selector选择器来解析网页，没别的原因，效率高。Selector选择器有XPath方法和css方法两种选择方法，我使用的是XPath方法。</p>
+<p>后注：在新版的Scrapy1.2.x版本中，默认使用Selector选择器，不再需要显式调用。</p>
+<h2 id="XPath"><a href="#XPath" class="headerlink" title="XPath"></a>XPath</h2><p>XPath 是一门在 XML 文档中查找信息的语言。因为网上的教程有很多，在此处推荐两个，我自己就不多讲了。一个菜鸟教程的<a href="http://www.runoob.com/xpath/xpath-intro.html" target="_blank" rel="noopener">XPath文字教程</a>，一个是极客学院的<a href="http://www.jikexueyuan.com/course/902.html" target="_blank" rel="noopener">XPath视频教程</a>，后者需要实名认证一下就可以观看，也不麻烦，个人比较推崇后者，老师讲的很易懂。相信我，根据教程只需要半个小时你就能明白XPath，再根据下面我的代码对照巩固一下，你就能掌握它了。</p>
+<h2 id="使用Chrome分析网页"><a href="#使用Chrome分析网页" class="headerlink" title="使用Chrome分析网页"></a>使用Chrome分析网页</h2><p>我们使用Chrome浏览器(firefox也是类似的)来分析网页，分析我们的XPath该怎么去写，比如说我们现在要分析帖子的标题<br>右键帖子标题，选择<code>检查</code><br><img src="../../../../../image/spider/scrapy-10.png" alt="检查"><br>此时，Chrome的调试工具会跳出来，并且自动定位到源代码中我们要检查的元素的位置<br><img src="../../../../../image/spider/scrapy-11.png" alt="检查2"><br>之后根据代码结构我们很轻松的就得出其XPath<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//*[@id=&quot;thread_subject&quot;]/text()</span><br></pre></td></tr></table></figure></p>
+<p>其实在某些时候也可以直接右键元素，选择copy xpath，但是这种方法在实践中用处基本为零，因为很难去找出多个网页的共同特质，所以一般情况下我们还是要自己去分析。<br><img src="../../../../../image/spider/scrapy-12.png" alt="自动生成"></p>
+<p>在这里有必要提醒一个<strong>神坑</strong>，在下面代码中也有体现，详见我从前写的这篇文章<a href="http://kongtianyi.cn/2016/08/24/python/Scrapy%E5%8C%B9%E9%85%8Dxpath%E6%97%B6tbody%E6%A0%87%E7%AD%BE%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener">Scrapy匹配xpath时tbody标签的问题</a><br>这个坑给我的启示是，当发现了感觉不能用科学解释的错误的时候，就检查一下获取到的源代码吧！</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>不说废话了，直接上代码。<br>首先，修改<code>items.py</code>文件,定义好我们要提取的内容<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeartsongItem</span><span class="params">(scrapy.Item)</span>:</span></span><br><span class="line">    title = scrapy.Field()  <span class="comment"># 帖子的标题</span></span><br><span class="line">    url = scrapy.Field()  <span class="comment"># 帖子的网页链接</span></span><br><span class="line">    author = scrapy.Field()  <span class="comment"># 帖子的作者</span></span><br><span class="line">    post_time = scrapy.Field()  <span class="comment"># 发表时间</span></span><br><span class="line">    content = scrapy.Field()  <span class="comment"># 帖子的内容</span></span><br></pre></td></tr></table></figure></p>
+<p>然后来到<code>heartsong_spider.py</code>,编写爬虫<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># import scrapy  # 可以写这句注释下面两句，不过下面要更好</span></span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> Spider</span><br><span class="line"><span class="keyword">from</span> scrapy.selector <span class="keyword">import</span> Selector</span><br><span class="line"><span class="keyword">from</span> heartsong.items <span class="keyword">import</span> HeartsongItem  <span class="comment"># 此处如果报错是pyCharm的原因</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeartsongSpider</span><span class="params">(Spider)</span>:</span></span><br><span class="line">    name = <span class="string">"heartsong"</span></span><br><span class="line">    allowed_domains = [<span class="string">"heartsong.top"</span>]  <span class="comment"># 允许爬取的域名，非此域名的网页不会爬取</span></span><br><span class="line">    start_urls = [</span><br><span class="line">        <span class="string">"http://www.heartsong.top/forum.php?mod=viewthread&amp;tid=8"</span>  <span class="comment"># 起始url，此例只爬这个页面</span></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        selector = Selector(response)  <span class="comment"># 创建选择器</span></span><br><span class="line">        <span class="comment"># 后注：在新版的Scrapy1.2.x版本中，不再需要这句话，直接使用response.xpath("xx")即可</span></span><br><span class="line"></span><br><span class="line">        table = selector.xpath(<span class="string">'//*[starts-with(@id, "pid")]'</span>)  <span class="comment"># 取出所有的楼层</span></span><br><span class="line">        <span class="keyword">for</span> each <span class="keyword">in</span> table:  <span class="comment"># 对于每一个楼层执行下列操作</span></span><br><span class="line">            item = HeartsongItem()  <span class="comment"># 实例化一个Item对象</span></span><br><span class="line">            item[<span class="string">'title'</span>] = selector.xpath(<span class="string">'//*[@id="thread_subject"]/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            item[<span class="string">'author'</span>] = \</span><br><span class="line">                each.xpath(<span class="string">'tr[1]/td[@class="pls"]/div[@class="pls favatar"]/div[@class="pi"]/div[@class="authi"]/a/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            item[<span class="string">'post_time'</span>] = \</span><br><span class="line">                each.xpath(<span class="string">'tr[1]/td[@class="plc"]/div[@class="pi"]'</span>).re(<span class="string">r'[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+'</span>)[<span class="number">0</span>].decode(<span class="string">"unicode_escape"</span>)</span><br><span class="line">            content_list = each.xpath(<span class="string">'.//td[@class="t_f"]'</span>).xpath(<span class="string">'string(.)'</span>).extract()</span><br><span class="line">            content = <span class="string">""</span>.join(content_list)  <span class="comment"># 将list转化为string</span></span><br><span class="line">            item[<span class="string">'url'</span>] = response.url  <span class="comment"># 用这种方式获取网页的url</span></span><br><span class="line">            <span class="comment"># 把内容中的换行符，空格等去掉</span></span><br><span class="line">            item[<span class="string">'content'</span>] = content.replace(<span class="string">'\r\n'</span>, <span class="string">''</span>).replace(<span class="string">' '</span>, <span class="string">''</span>).replace(<span class="string">'\n'</span>, <span class="string">''</span>)</span><br><span class="line">            <span class="keyword">yield</span> item  <span class="comment"># 将创建并赋值好的Item对象传递到PipeLine当中进行处理</span></span><br></pre></td></tr></table></figure></p>
+<p>最后到<code>pipelines.py</code>中保存爬取到的数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> heartsong.settings</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeartsongPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        file = open(<span class="string">"items.txt"</span>, <span class="string">"a"</span>)  <span class="comment"># 以追加的方式打开文件，不存在则创建</span></span><br><span class="line">        <span class="comment"># 因为item中的数据是unicode编码的，为了在控制台中查看数据的有效性和保存，</span></span><br><span class="line">        <span class="comment"># 将其编码改为utf-8</span></span><br><span class="line">        item_string = str(item).decode(<span class="string">"unicode_escape"</span>).encode(<span class="string">'utf-8'</span>)</span><br><span class="line">        file.write(item_string)</span><br><span class="line">        file.write(<span class="string">'\n'</span>)</span><br><span class="line">        file.close()</span><br><span class="line">        <span class="keyword">print</span> item_string  <span class="comment">#在控制台输出</span></span><br><span class="line">        <span class="keyword">return</span> item  <span class="comment"># 会在控制台输出原item数据，可以选择不写</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>依旧进入项目目录，在终端输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy crawl heartsong</span><br></pre></td></tr></table></figure></p>
+<p>看一下输出的信息，没问题。<br><img src="../../../../../image/spider/scrapy-7.png" alt="输出"><br>看一下生成的本地文件，也ok。<br><img src="../../../../../image/spider/scrapy-8.png" alt="本地文件"><br><img src="../../../../../image/spider/scrapy-9.png" alt="本地文件2"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本部分介绍了页面解析的方法，下一部分将会介绍Scrapy爬取多个网页，也是让咱的爬虫真正爬起来的一部分。结合这两节，你就能将我的论坛上的所有帖子都爬下来了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://kongtianyi.github.io/2016/09/27/python/Scrapy-Lesson-2/" data-id="cktsycnxi0047uguf6j554dw7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Scrapy/">Scrapy</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/28/python/Scrapy-Lesson-3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Scrapy定向爬虫教程(三)——爬取多个页面
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/26/python/Scrapy-Lesson-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Scrapy定向爬虫教程(一)——创建运行项目和基本介绍</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lisence/">Lisence</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/commen/">commen</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分享/">分享</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲情偶记/">闲情偶记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JOJO/">JOJO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lisence/">Lisence</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-zerorpc/">Python zerorpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commen/">commen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/next/">next</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qsort/">qsort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分享/">分享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大型/">大型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据分析/">数据分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/诗/">诗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置/">配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/闲情偶记/">闲情偶记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合框架/">集合框架</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Hadoop/" style="font-size: 11.67px;">Hadoop</a> <a href="/tags/JAVA/" style="font-size: 11.67px;">JAVA</a> <a href="/tags/JOJO/" style="font-size: 10px;">JOJO</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Lisence/" style="font-size: 10px;">Lisence</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-zerorpc/" style="font-size: 10px;">Python zerorpc</a> <a href="/tags/Scrapy/" style="font-size: 18.33px;">Scrapy</a> <a href="/tags/Ubuntu/" style="font-size: 11.67px;">Ubuntu</a> <a href="/tags/commen/" style="font-size: 10px;">commen</a> <a href="/tags/hash/" style="font-size: 11.67px;">hash</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/html/" style="font-size: 11.67px;">html</a> <a href="/tags/js/" style="font-size: 13.33px;">js</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/next/" style="font-size: 11.67px;">next</a> <a href="/tags/qsort/" style="font-size: 10px;">qsort</a> <a href="/tags/分享/" style="font-size: 10px;">分享</a> <a href="/tags/大型/" style="font-size: 10px;">大型</a> <a href="/tags/数据分析/" style="font-size: 10px;">数据分析</a> <a href="/tags/虚拟机/" style="font-size: 10px;">虚拟机</a> <a href="/tags/诗/" style="font-size: 15px;">诗</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a> <a href="/tags/闲情偶记/" style="font-size: 16.67px;">闲情偶记</a> <a href="/tags/集合框架/" style="font-size: 10px;">集合框架</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/21/prose/about-love/">关于爱的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/18/prose/zlw-marry/">从领袖结婚说开去</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/12/share/jojo-lines/">JOJO名场面台词分享</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/26/peom/siroi-peom/">白色的世界</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/python/BloomFilterRedis/">基于Redis的布隆过滤器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 孔天逸<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
