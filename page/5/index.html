@@ -270,6 +270,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kongtianyi.github.io/2016/09/26/python/Scrapy-Lesson-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孔天逸">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/image/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="孔天逸'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/26/python/Scrapy-Lesson-1/" itemprop="url">Scrapy定向爬虫教程(一)——创建运行项目和基本介绍</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-26T12:03:14+08:00">
+                2016-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2016/09/26/python/Scrapy-Lesson-1/#SOHUCS" itemprop="discussionUrl">
+                  <span id="url::http://kongtianyi.github.io/2016/09/26/python/Scrapy-Lesson-1/" class="cy_cmt_count" data-xid="2016/09/26/python/Scrapy-Lesson-1/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>本教程为原创教程，转载请注明出处<a href="http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-1/" target="_blank" rel="noopener">http://kongtianyi.cn/2016/09/26/python/Scrapy-Lesson-1/</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目前网上的Scrapy中文教程比较少，而且大多教程使用的Scrapy版本较老，比如说这个<a href="http://scrapy-chs.readthedocs.io/zh_CN/latest/index.html" target="_blank" rel="noopener">Scrapy 0.25 文档</a>，如其名，上古时期的翻译文档(后注：这个文档在不断更新，现在已更至1.0版本，喜欢阅读文档学习的朋友可以移步)；再比如<a href="http://www.jikexueyuan.com/course/1287.html" target="_blank" rel="noopener">极客学院的视频教程</a>使用的是1.0.x版本，跟新版相比还是有出入(后注：当然喜欢视频的朋友可以移步)。这种情况使得新手入门Scrapy较为困难，而且各种掉坑。本人也是只刚入门的菜鸟，我希望能用菜鸟的语言给其他想要踏进Scrapy大门的小菜鸟指引一条道路。至少比我踩得坑少点吧^-^。</p>
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ul>
+<li>Ubuntu 16.04 </li>
+<li>Python 2.7.12</li>
+<li>Scrapy  1.1.2(后注:因版本更新较快，我会把所知的新改动在教程中更新)</li>
+<li>PyCharm 2016.1.4</li>
+</ul>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本教程将带领大家写一个爬取Discuz模板论坛网站的定向爬虫，网上的Discuz论坛数不胜数，当然我也不敢公开在这教唆大家去侵犯某一个，只好祭出自己搭的论坛来供大家练习——<a href="http://www.heartsong.top/forum.php" target="_blank" rel="noopener">心韵论坛</a>。当然，既然是Discuz模板，用哪个网站做教程都是大同小异的。有了思路后，其他网站也会触类旁通。本教程分为以下八个部分，将分为八篇博文向大家介绍：</p>
+<ul>
+<li>Scrapy安装与项目创建</li>
+<li>通过Selector选择器解析页面获取内容</li>
+<li>爬取多个页面</li>
+<li>数据存入MongoDB</li>
+<li>保持登陆状态</li>
+<li>分析表单并回帖</li>
+<li>使用UA/代理中间件(因课业繁忙，未更新，可催)</li>
+<li>结束邮件通知(因课业繁忙，未更新，可催)</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/26/python/Scrapy-Lesson-1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://kongtianyi.github.io/2016/09/24/js/JavaScript闭包/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1684,163 +1859,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://kongtianyi.github.io/2016/08/24/python/Scrapy匹配xpath时tbody标签的问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="孔天逸">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/image/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="孔天逸'Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/24/python/Scrapy匹配xpath时tbody标签的问题/" itemprop="url">Scrapy匹配xpath时tbody标签的问题</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-24T19:04:21+08:00">
-                2016-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/2016/08/24/python/Scrapy匹配xpath时tbody标签的问题/#SOHUCS" itemprop="discussionUrl">
-                  <span id="url::http://kongtianyi.github.io/2016/08/24/python/Scrapy匹配xpath时tbody标签的问题/" class="cy_cmt_count" data-xid="2016/08/24/python/Scrapy匹配xpath时tbody标签的问题/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>今天学习Scrapy的使用，在用xpath匹配元素的时候，发现老是出错，后来发现是<code>&lt;tbody&gt;</code>标签上有文章。</p>
-<h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>我使用Chrome的元素审查和查看网页源代码对网页进行分析，得出xpath，但是Chrome会对网页源码进行加工，在<code>&lt;table&gt;</code>标签中，如果源码中没有写<code>&lt;tbody&gt;</code>标签，在元素审查和查看网页源代码中还是会将<code>&lt;tbody&gt;</code>强行添加上。</p>
-<p>当然，若源代码中没有<code>&lt;tbody&gt;</code>，而我们信任Chrome而把它添进xpath的话，是不会匹配出想要的结果的。</p>
-<p>我们可以通过<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print response</span><br></pre></td></tr></table></figure></p>
-<p>对源代码进行检查，确定有没有<code>&lt;tbody&gt;</code>标签后，再得出xpath。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1893,7 +1911,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
